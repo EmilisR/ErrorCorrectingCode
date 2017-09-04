@@ -45,6 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelManager.cs" />
+    <Compile Include="ConversionManager.cs" />
+    <Compile Include="DecodeManager.cs" />
+    <Compile Include="EncodeManager.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
