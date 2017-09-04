@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,11 @@ namespace ErrorCorrectingCode
 
         public static byte[] ImageToBytes(this Image image)
         {
-            return null;
+            Image newImage = (Image)image.Clone();
+            image.Dispose();
+            Byte[] result
+    = (Byte[])new ImageConverter().ConvertTo(newImage, typeof(Byte[]));
+            return result;
         }
 
         public static string BytesToText(this string[] bytes)
@@ -41,7 +46,9 @@ namespace ErrorCorrectingCode
 
         public static Image BytesToImage(this byte[] bytes)
         {
-            return null;
+            MemoryStream ms = new MemoryStream(bytes);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
         }
     }
 }
