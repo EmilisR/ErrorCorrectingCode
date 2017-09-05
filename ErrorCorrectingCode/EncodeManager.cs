@@ -8,14 +8,21 @@ namespace ErrorCorrectingCode
 {
     class EncodeManager
     {
-        public string[] NoEncode(string[] data)
+        public string NoEncode(string data)
         {
             return data;
         }
 
-        public string[] Encode(string[] data)
+        public string Encode(string data)
         {
-            return data;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var c in data)
+            {
+                sb.Append($"{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}{c}");
+            }
+
+            return sb.ToString();
         }
     }
 }
