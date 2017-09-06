@@ -55,10 +55,20 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatrixEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MatrixEdit.Designer.cs">
+      <DependentUpon>MatrixEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MatrixManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MatrixEdit.resx">
+      <DependentUpon>MatrixEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

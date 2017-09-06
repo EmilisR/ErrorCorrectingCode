@@ -38,24 +38,27 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.textTabPage = new System.Windows.Forms.TabPage();
             this.imageTabPage = new System.Windows.Forms.TabPage();
+            this.viewMatrixButton = new System.Windows.Forms.Button();
+            this.generateMatrixButton = new System.Windows.Forms.Button();
+            this.setMatrixButton = new System.Windows.Forms.Button();
+            this.decodedPictureBoxWithCorrecting = new System.Windows.Forms.PictureBox();
+            this.imageProbabilityValue = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.imageProbabilityTrackBar = new System.Windows.Forms.TrackBar();
             this.fileNameLabel = new System.Windows.Forms.Label();
             this.chooseFileButton = new System.Windows.Forms.Button();
             this.sendImageButton = new System.Windows.Forms.Button();
             this.decodedPictureBox = new System.Windows.Forms.PictureBox();
             this.encodedPictureBox = new System.Windows.Forms.PictureBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.imageProbabilityValue = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.imageProbabilityTrackBar = new System.Windows.Forms.TrackBar();
-            this.decodedPictureBoxWithCorrecting = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.probabilityTrackBar)).BeginInit();
             this.tabControl.SuspendLayout();
             this.textTabPage.SuspendLayout();
             this.imageTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBoxWithCorrecting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageProbabilityTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.encodedPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageProbabilityTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBoxWithCorrecting)).BeginInit();
             this.SuspendLayout();
             // 
             // encodeTextBox
@@ -141,13 +144,16 @@
             this.textTabPage.Location = new System.Drawing.Point(10, 47);
             this.textTabPage.Name = "textTabPage";
             this.textTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.textTabPage.Size = new System.Drawing.Size(2111, 594);
+            this.textTabPage.Size = new System.Drawing.Size(2111, 1152);
             this.textTabPage.TabIndex = 0;
-            this.textTabPage.Text = "Text";
+            this.textTabPage.Text = "Tekstas";
             this.textTabPage.UseVisualStyleBackColor = true;
             // 
             // imageTabPage
             // 
+            this.imageTabPage.Controls.Add(this.viewMatrixButton);
+            this.imageTabPage.Controls.Add(this.generateMatrixButton);
+            this.imageTabPage.Controls.Add(this.setMatrixButton);
             this.imageTabPage.Controls.Add(this.decodedPictureBoxWithCorrecting);
             this.imageTabPage.Controls.Add(this.imageProbabilityValue);
             this.imageTabPage.Controls.Add(this.label1);
@@ -162,8 +168,72 @@
             this.imageTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.imageTabPage.Size = new System.Drawing.Size(2111, 1152);
             this.imageTabPage.TabIndex = 1;
-            this.imageTabPage.Text = "Image";
+            this.imageTabPage.Text = "Paveiksliukas";
             this.imageTabPage.UseVisualStyleBackColor = true;
+            // 
+            // viewMatrixButton
+            // 
+            this.viewMatrixButton.Location = new System.Drawing.Point(572, 57);
+            this.viewMatrixButton.Name = "viewMatrixButton";
+            this.viewMatrixButton.Size = new System.Drawing.Size(294, 125);
+            this.viewMatrixButton.TabIndex = 16;
+            this.viewMatrixButton.Text = "Peržiūrėti generuojančią matricą";
+            this.viewMatrixButton.UseVisualStyleBackColor = true;
+            this.viewMatrixButton.Click += new System.EventHandler(this.viewMatrixButton_Click);
+            // 
+            // generateMatrixButton
+            // 
+            this.generateMatrixButton.Location = new System.Drawing.Point(291, 57);
+            this.generateMatrixButton.Name = "generateMatrixButton";
+            this.generateMatrixButton.Size = new System.Drawing.Size(275, 125);
+            this.generateMatrixButton.TabIndex = 15;
+            this.generateMatrixButton.Text = "Sugeneruoti generuojančią matricą";
+            this.generateMatrixButton.UseVisualStyleBackColor = true;
+            this.generateMatrixButton.Click += new System.EventHandler(this.generateMatrixButton_Click);
+            // 
+            // setMatrixButton
+            // 
+            this.setMatrixButton.Location = new System.Drawing.Point(16, 57);
+            this.setMatrixButton.Name = "setMatrixButton";
+            this.setMatrixButton.Size = new System.Drawing.Size(269, 125);
+            this.setMatrixButton.TabIndex = 14;
+            this.setMatrixButton.Text = "Įvesti generuojančią matricą";
+            this.setMatrixButton.UseVisualStyleBackColor = true;
+            this.setMatrixButton.Click += new System.EventHandler(this.setMatrixButton_Click);
+            // 
+            // decodedPictureBoxWithCorrecting
+            // 
+            this.decodedPictureBoxWithCorrecting.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.decodedPictureBoxWithCorrecting.Location = new System.Drawing.Point(1252, 584);
+            this.decodedPictureBoxWithCorrecting.Name = "decodedPictureBoxWithCorrecting";
+            this.decodedPictureBoxWithCorrecting.Size = new System.Drawing.Size(831, 540);
+            this.decodedPictureBoxWithCorrecting.TabIndex = 13;
+            this.decodedPictureBoxWithCorrecting.TabStop = false;
+            // 
+            // imageProbabilityValue
+            // 
+            this.imageProbabilityValue.Location = new System.Drawing.Point(1153, 430);
+            this.imageProbabilityValue.Name = "imageProbabilityValue";
+            this.imageProbabilityValue.Size = new System.Drawing.Size(75, 35);
+            this.imageProbabilityValue.TabIndex = 11;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(886, 339);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(335, 29);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Kanalo klaidų procentinė dalis";
+            // 
+            // imageProbabilityTrackBar
+            // 
+            this.imageProbabilityTrackBar.Location = new System.Drawing.Point(891, 430);
+            this.imageProbabilityTrackBar.Maximum = 100;
+            this.imageProbabilityTrackBar.Name = "imageProbabilityTrackBar";
+            this.imageProbabilityTrackBar.Size = new System.Drawing.Size(256, 101);
+            this.imageProbabilityTrackBar.TabIndex = 10;
+            this.imageProbabilityTrackBar.ValueChanged += new System.EventHandler(this.imageProbabilityTrackBar_ValueChanged);
             // 
             // fileNameLabel
             // 
@@ -189,7 +259,7 @@
             this.sendImageButton.Name = "sendImageButton";
             this.sendImageButton.Size = new System.Drawing.Size(337, 144);
             this.sendImageButton.TabIndex = 3;
-            this.sendImageButton.Text = "Send";
+            this.sendImageButton.Text = "Apdoroti";
             this.sendImageButton.UseVisualStyleBackColor = true;
             this.sendImageButton.Click += new System.EventHandler(this.sendImageButton_Click);
             // 
@@ -205,7 +275,7 @@
             // encodedPictureBox
             // 
             this.encodedPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.encodedPictureBox.Location = new System.Drawing.Point(28, 317);
+            this.encodedPictureBox.Location = new System.Drawing.Point(16, 584);
             this.encodedPictureBox.Name = "encodedPictureBox";
             this.encodedPictureBox.Size = new System.Drawing.Size(831, 540);
             this.encodedPictureBox.TabIndex = 0;
@@ -214,40 +284,6 @@
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
-            // 
-            // imageProbabilityValue
-            // 
-            this.imageProbabilityValue.Location = new System.Drawing.Point(1153, 430);
-            this.imageProbabilityValue.Name = "imageProbabilityValue";
-            this.imageProbabilityValue.Size = new System.Drawing.Size(75, 35);
-            this.imageProbabilityValue.TabIndex = 11;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(886, 339);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(320, 29);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Probability of corrupted data:";
-            // 
-            // imageProbabilityTrackBar
-            // 
-            this.imageProbabilityTrackBar.Location = new System.Drawing.Point(891, 430);
-            this.imageProbabilityTrackBar.Maximum = 100;
-            this.imageProbabilityTrackBar.Name = "imageProbabilityTrackBar";
-            this.imageProbabilityTrackBar.Size = new System.Drawing.Size(256, 101);
-            this.imageProbabilityTrackBar.TabIndex = 10;
-            this.imageProbabilityTrackBar.ValueChanged += new System.EventHandler(this.imageProbabilityTrackBar_ValueChanged);
-            // 
-            // decodedPictureBoxWithCorrecting
-            // 
-            this.decodedPictureBoxWithCorrecting.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.decodedPictureBoxWithCorrecting.Location = new System.Drawing.Point(1252, 584);
-            this.decodedPictureBoxWithCorrecting.Name = "decodedPictureBoxWithCorrecting";
-            this.decodedPictureBoxWithCorrecting.Size = new System.Drawing.Size(831, 540);
-            this.decodedPictureBoxWithCorrecting.TabIndex = 13;
-            this.decodedPictureBoxWithCorrecting.TabStop = false;
             // 
             // MainWindow
             // 
@@ -265,10 +301,10 @@
             this.textTabPage.PerformLayout();
             this.imageTabPage.ResumeLayout(false);
             this.imageTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBoxWithCorrecting)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imageProbabilityTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.encodedPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imageProbabilityTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.decodedPictureBoxWithCorrecting)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,6 +331,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TrackBar imageProbabilityTrackBar;
         private System.Windows.Forms.PictureBox decodedPictureBoxWithCorrecting;
+        private System.Windows.Forms.Button viewMatrixButton;
+        private System.Windows.Forms.Button generateMatrixButton;
+        private System.Windows.Forms.Button setMatrixButton;
     }
 }
 

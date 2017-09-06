@@ -15,6 +15,7 @@ namespace ErrorCorrectingCode
     {
         private string encodedData = "";
         private string encodedDataWithCoding = "";
+        private byte[,] matrix;
 
         public MainWindow()
         {
@@ -123,6 +124,38 @@ namespace ErrorCorrectingCode
         private void imageProbabilityTrackBar_ValueChanged(object sender, EventArgs e)
         {
             imageProbabilityValue.Text = imageProbabilityTrackBar.Value.ToString() + "%";
+        }
+
+        private void setMatrixButton_Click(object sender, EventArgs e)
+        {
+            MatrixEdit matrixForm = new MatrixEdit();
+            if (matrixForm.ShowDialog()  == DialogResult.OK)
+            {
+                matrix = matrixForm.matrix;
+            }
+        }
+
+        private void generateMatrixButton_Click(object sender, EventArgs e)
+        {
+            MatrixEdit matrixForm = new MatrixEdit();
+            matrixForm.generate = true;
+            if (matrixForm.ShowDialog() == DialogResult.OK)
+            {
+                matrix = matrixForm.matrix;
+            }
+        }
+
+        private void viewMatrixButton_Click(object sender, EventArgs e)
+        {
+            if (matrix != null)
+            {
+                MatrixEdit matrixForm = new MatrixEdit(matrix);
+                matrixForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Matrica dar nesugeneruota", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

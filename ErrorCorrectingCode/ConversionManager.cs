@@ -62,7 +62,6 @@ namespace ErrorCorrectingCode
             IntPtr ptr = bmpData.Scan0;      //this is a memory address, where the bitmap starts
             Int32 psize = bmpData.Stride * bmpData.Height;      // picture size in bytes
             byte[] byOut = new byte[psize];     //create the output byte array, which size is obviously the same as the input one
-
             System.Runtime.InteropServices.Marshal.Copy(ptr, byOut, 0, psize);      //this is a very fast method, which copies the memory content to byteOut array, but implemented for 24 bpp pictures only
             img.UnlockBits(bmpData);      //release the locked memory
             return byOut;      //  e finita la commedia
