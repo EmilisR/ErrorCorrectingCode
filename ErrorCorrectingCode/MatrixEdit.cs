@@ -29,9 +29,9 @@ namespace ErrorCorrectingCode
             codeLengthLabel.Visible = false;
             codeLengthMaskedTextBox.Visible = false;
             saveMatrixButton.Visible = false;
-            matrixTable.RowCount = matrixArray.GetLength(1);
-            matrixTable.ColumnCount = matrixArray.GetLength(0);
-            BindMatrixArrayToTable(matrixArray, matrixTable.ColumnCount, matrixTable.RowCount);
+            matrixTable.RowCount = matrixArray.GetLength(0);
+            matrixTable.ColumnCount = matrixArray.GetLength(1);
+            BindMatrixArrayToTable(matrixArray, matrixTable.RowCount, matrixTable.ColumnCount);
             foreach (DataGridViewRow row in matrixTable.Rows)
             {
                 row.Height = matrixTable.Height / matrixTable.RowCount - 1;
@@ -51,6 +51,16 @@ namespace ErrorCorrectingCode
                 width > 0 &&
                 heigth > 0)
             {
+                if (width < heigth)
+                {
+                    MessageBox.Show("Matricos dimensija negali būti didesnė nei kodo ilgis", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                if (Math.Pow(2, width - heigth) < heigth)
+                {
+                    MessageBox.Show("Matricos parametrai netinkami generuoti matricą", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 matrixTable.RowCount = Convert.ToInt32(heigth);
                 matrixTable.ColumnCount = Convert.ToInt32(width);
 
@@ -66,29 +76,36 @@ namespace ErrorCorrectingCode
 
                 if (generate)
                 {
-                    byte[,] matrixArray = new MatrixManager().GenerateMatrix(width, heigth);
-                    BindMatrixArrayToTable(matrixArray, width, heigth);
+                    byte[,] matrixArray = new MatrixManager().GenerateMatrix(heigth, width);
+                    BindMatrixArrayToTable(matrixArray, heigth, width);
                 }
-                else
+                else if (matrixTable == null)
                 {
                     MessageBox.Show("Klaidingai įvesti matricos dydžiai", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void BindMatrixArrayToTable(byte[,] array, int width, int heigth)
+        private void BindMatrixArrayToTable(byte[,] array, int heigth, int width)
         {
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < heigth; i++)
             {
-                for (int j = 0; j < heigth; j++)
+                for (int j = 0; j < width; j++)
                 {
-                    matrixTable[i, j].Value = array[i, j].ToString();
+                    matrixTable[j, i].Value = array[i, j].ToString();
                 }
             }
         }
 
         private void SaveMatrixButton_Click(object sender, EventArgs e)
         {
+            var manager = new MatrixManager();
+            if (!manager.IsValidMatrix(manager.DataGridViewTableToMatrix(matrixTable)))
+            {
+                MessageBox.Show("Klaidingai įvesti matricos dydžiai", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             foreach (DataGridViewRow row in matrixTable.Rows)
             {
                 foreach (DataGridViewCell cell in row.Cells)

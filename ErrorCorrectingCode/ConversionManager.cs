@@ -79,7 +79,7 @@ namespace ErrorCorrectingCode
             Int32 psize = bmpData.Stride * imheight;
             System.Runtime.InteropServices.Marshal.Copy(byteIn, 0, ptr, psize);
             picOut.UnlockBits(bmpData);
-            return picOut;      //  e finita la commedia
+            return picOut;     
         }
     }
 }

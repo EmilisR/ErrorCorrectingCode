@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.codeLengthMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.dimensionMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.codeLengthLabel = new System.Windows.Forms.Label();
@@ -77,7 +78,7 @@
             this.changeMatrixSizeButton.Name = "changeMatrixSizeButton";
             this.changeMatrixSizeButton.Size = new System.Drawing.Size(178, 56);
             this.changeMatrixSizeButton.TabIndex = 4;
-            this.changeMatrixSizeButton.Text = "Pakeisti dydį";
+            this.changeMatrixSizeButton.Text = "Generuoti";
             this.changeMatrixSizeButton.UseVisualStyleBackColor = true;
             this.changeMatrixSizeButton.Click += new System.EventHandler(this.changeMatrixSizeButton_Click);
             // 
@@ -97,18 +98,20 @@
             this.matrixTable.AllowUserToDeleteRows = false;
             this.matrixTable.AllowUserToResizeColumns = false;
             this.matrixTable.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.matrixTable.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.matrixTable.BackgroundColor = System.Drawing.SystemColors.Control;
             this.matrixTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.matrixTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.matrixTable.ColumnHeadersVisible = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.matrixTable.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.matrixTable.DefaultCellStyle = dataGridViewCellStyle2;
             this.matrixTable.Location = new System.Drawing.Point(57, 150);
             this.matrixTable.MultiSelect = false;
             this.matrixTable.Name = "matrixTable";

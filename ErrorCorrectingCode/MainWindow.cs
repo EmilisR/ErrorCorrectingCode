@@ -107,11 +107,11 @@ namespace ErrorCorrectingCode
                 if (encodedData == "")
                     encodedData = encodeManager.NoEncode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
                 if (encodedDataWithCoding == "")
-                    encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
+                    encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString(), matrix);
                 var dataAfterChannel = channelManager.SendThroughChannel(encodedData, imageProbabilityTrackBar.Value);
                 var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, imageProbabilityTrackBar.Value);
                 var decodedData = decodeManager.NoDecode(dataAfterChannel).BinaryStringToBytes();
-                var decodedDataWithDecode = decodeManager.Decode(dataAfterChannelWithCoding).BinaryStringToBytes();
+                var decodedDataWithDecode = decodeManager.Decode(dataAfterChannelWithCoding, matrix).BinaryStringToBytes();
                 decodedPictureBox.Image = decodedData.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
                 decodedPictureBoxWithCorrecting.Image = decodedDataWithDecode.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
             }
