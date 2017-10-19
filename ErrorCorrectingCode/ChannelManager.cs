@@ -12,7 +12,6 @@ namespace ErrorCorrectingCode
         {
             StringBuilder sb = new StringBuilder();
             Random random = new Random();
-
             foreach (var bit in binaryString)
             {
                 if (random.Next(0, 100) < probabilityOfDataLoss)

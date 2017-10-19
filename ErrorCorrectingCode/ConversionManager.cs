@@ -45,6 +45,8 @@ namespace ErrorCorrectingCode
 
         public static byte[] BinaryStringToBytes(this string binaryString)
         {
+            if (binaryString.Length % 8 != 0)
+                binaryString += new String('0', binaryString.Length % 8);
             return Enumerable.Range(0, int.MaxValue / 8)
                           .Select(i => i * 8)    // get the starting index of which char segment
                           .TakeWhile(i => i < binaryString.Length)

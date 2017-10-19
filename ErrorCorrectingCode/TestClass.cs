@@ -52,5 +52,15 @@ namespace ErrorCorrectingCode
             var result = manager.MultiplyMatrixAndVector(matrix, vector);
             Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0 }.OfType<byte>()));
         }
+
+        [TestMethod]
+        public void AddVectorTest()
+        {
+            var vector1 = new byte[] { 0, 0, 0, 1, 1 };
+            var vector2 = new byte[] { 1, 0, 1, 1, 1 };
+            MatrixManager manager = new MatrixManager();
+            var result = manager.AddVector(vector1, vector2);
+            Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0, 1, 0, 0 }.OfType<byte>()));
+        }
     }
 }

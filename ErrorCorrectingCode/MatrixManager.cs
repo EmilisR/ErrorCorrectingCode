@@ -79,6 +79,11 @@ namespace ErrorCorrectingCode
             return matrix;
         }
 
+        public int GetWeightOfVector(byte[] vector)
+        {
+            return vector.Where(x => x == 1).Count();
+        }
+
         public byte[] GetRow(byte[,] matrix, int row)
         {
             var width = matrix.GetLength(1);
@@ -92,6 +97,20 @@ namespace ErrorCorrectingCode
                 returnRow[i] = matrix[row, i];
 
             return returnRow;
+        }
+
+        public byte[] AddVector(byte[] vector1, byte[] vector2)
+        {
+            var result = new byte[vector1.Length];
+
+            for (int i = 0; i < vector1.Length; i++)
+            {
+                if (vector1[i] + vector2[i] == 1)
+                    result[i] = 1;
+                else result[i] = 0;
+            }
+
+            return result;
         }
 
         public byte[] MultiplyMatrixAndVector(byte[,] matrix, byte[] vector)
@@ -183,6 +202,11 @@ namespace ErrorCorrectingCode
                 }
             }
             return matrix;
+        }
+
+        public byte[] GetSindrome(byte[,] parityMatrix, byte[] vector)
+        {
+            return MultiplyMatrixAndVector(parityMatrix, vector);
         }
     }
 }
