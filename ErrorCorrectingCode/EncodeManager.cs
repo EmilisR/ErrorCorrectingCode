@@ -29,9 +29,9 @@ namespace ErrorCorrectingCode
             return sb.ToString();
         }
 
-        private byte[] EncodeVector(byte[] vector, byte[,] matrix)
+        public byte[] EncodeVector(byte[] vector, byte[,] matrix)
         {
-            return matrixManager.MultiplyMatrixAndVector(matrix, vector);
+            return matrixManager.MultiplyMatrixAndVector(matrixManager.TransposeMatrix(matrix), vector);
         }
     }
 }

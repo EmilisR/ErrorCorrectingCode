@@ -64,6 +64,21 @@ namespace ErrorCorrectingCode
                 return false;
         }
 
+        public Dictionary<byte[], byte[]> GetAnswersTable(byte[,] matrix, int width)
+        {
+            var dict = new Dictionary<byte[], byte[]>();
+
+            for (int i = 0; i < Math.Pow(2, width); i++)
+            {
+                var vector = Convert.ToString(i, 2).PadLeft(width, '0').Select(x => (byte)char.GetNumericValue(x)).ToArray();
+                var encodedVector = MultiplyMatrixAndVector(matrix, vector);
+                if (!dict.Values.Any(x => x.SequenceEqual(encodedVector)))
+                    dict.Add(vector, encodedVector);
+            }
+
+            return dict;
+        }
+
         public byte[,] DataGridViewTableToMatrix(DataGridView grid)
         {
             byte[,] matrix = new byte[grid.Rows.Count, grid.Columns.Count];

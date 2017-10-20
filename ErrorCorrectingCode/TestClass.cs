@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace ErrorCorrectingCode
@@ -61,6 +62,54 @@ namespace ErrorCorrectingCode
             MatrixManager manager = new MatrixManager();
             var result = manager.AddVector(vector1, vector2);
             Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0, 1, 0, 0 }.OfType<byte>()));
+        }
+
+        [TestMethod]
+        public void EncodeVectorTest()
+        {
+            var vector = new byte[] { 1, 0, 1, 0 };
+            var matrix = new byte[4, 7]
+            {
+                { 1, 0, 0, 0, 1, 1, 0 },
+                { 0, 1, 0, 0, 0, 1, 0 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 0, 0, 0, 1, 1, 0, 0 }
+            };
+            EncodeManager manager = new EncodeManager();
+            var result = manager.EncodeVector(vector, matrix);
+            Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0, 1, 0, 1, 0, 1 }.OfType<byte>()));
+        }
+
+        [TestMethod]
+        public void GetAnswersTableTest()
+        {
+            var matrix = new byte[4, 7]
+            {
+                { 1, 0, 0, 0, 1, 1, 0 },
+                { 0, 1, 0, 0, 0, 1, 0 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 0, 0, 0, 1, 1, 0, 0 }
+            };
+            MatrixManager manager = new MatrixManager();
+            var result = manager.GetAnswersTable(matrix, matrix.GetLength(1));
+            Assert.IsTrue(result.Count == Math.Pow(2, matrix.GetLength(0)));
+        }
+
+        [TestMethod]
+        public void DecodeVectorTest()
+        {
+            var vector = new byte[] { 1, 0, 1, 0, 1, 0, 1 };
+            var matrix = new byte[4, 7]
+            {
+                { 1, 0, 0, 0, 1, 1, 0 },
+                { 0, 1, 0, 0, 0, 1, 0 },
+                { 0, 0, 1, 0, 0, 1, 1 },
+                { 0, 0, 0, 1, 1, 0, 0 }
+            };
+            DecodeManager manager = new DecodeManager();
+            manager.PrepareForDecoding(matrix);
+            var result = manager.DecodeVector(vector);
+            Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0, 1, 0 }.OfType<byte>()));
         }
     }
 }

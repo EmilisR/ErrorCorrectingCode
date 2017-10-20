@@ -12,6 +12,7 @@ namespace ErrorCorrectingCode
         private byte[,] generatingMatrix;
         private MatrixManager manager = new MatrixManager();
         private Dictionary<byte[], byte[]> SindromeCosetsTable = new Dictionary<byte[], byte[]>();
+        private Dictionary<byte[], byte[]> AnswersTable = new Dictionary<byte[], byte[]>();
         public string NoDecode(string data)
         {
             return data;
@@ -35,10 +36,11 @@ namespace ErrorCorrectingCode
             return sb.ToString();
         }
 
-        private void PrepareForDecoding(byte[,] matrix)
+        public void PrepareForDecoding(byte[,] matrix)
         {
             parityMatrix = manager.GenerateParityCheckFromGeneratingMatrix(matrix);
             generatingMatrix = matrix;
+            AnswersTable = manager.GetAnswersTable(matrix, matrix.GetLength(1));
             SindromeCosetsTable = GenerateSindromeCosetsTable(matrix.GetLength(1));
         }
 
@@ -57,9 +59,9 @@ namespace ErrorCorrectingCode
             return dict;
         }
 
-        private byte[] DecodeVector(byte[] vector)
+        public byte[] DecodeVector(byte[] vector)
         {
-            
+
 
             StringBuilder sb = new StringBuilder();
 
@@ -68,9 +70,16 @@ namespace ErrorCorrectingCode
                 var sindrome = manager.GetSindrome(parityMatrix, vector);
 
                 var weight = manager.GetWeightOfVector(SindromeCosetsTable.FirstOrDefault(x => x.Value.SequenceEqual(sindrome)).Key);
+                try
+                {
+                    if (weight == 0)
+                        return AnswersTable.Where(x => x.Value.SequenceEqual(vector)).FirstOrDefault().Key;
+                }
+                catch
+                {
+                    return vector;
+                }
 
-                if (weight == 0)
-                    return manager.MultiplyMatrixAndVector(generatingMatrix, vector);
 
                 var errorVector = new byte[vector.Length];
                 errorVector[i] = 1;
