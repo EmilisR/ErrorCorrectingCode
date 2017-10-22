@@ -14,7 +14,7 @@ namespace ErrorCorrectingCode
             Random random = new Random();
             foreach (var bit in binaryString)
             {
-                if (random.Next(0, 100) < probabilityOfDataLoss)
+                if (random.Next(0, 10000) <= probabilityOfDataLoss)
                 {
                     if (bit == '0')
                         sb.Append('1');
@@ -28,6 +28,21 @@ namespace ErrorCorrectingCode
             }
 
             return sb.ToString();
+        }
+
+        public int FindErrorsCount(string before, string after)
+        {
+            int counter = 0;
+            var a = after.Length;
+            var b = before.Length;
+            before = before.Substring(0, after.Length);
+            for (int i = 0; i < before.Length; i++)
+            {
+                if (before[i] != after[i])
+                    counter++;
+            }
+
+            return counter;
         }
     }
 }

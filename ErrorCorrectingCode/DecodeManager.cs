@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace ErrorCorrectingCode
         private byte[,] generatingMatrix;
         private MatrixManager manager = new MatrixManager();
         private Dictionary<byte[], byte[]> SindromeCosetsTable = new Dictionary<byte[], byte[]>();
-        private Dictionary<byte[], byte[]> AnswersTable = new Dictionary<byte[], byte[]>();
+        private Dictionary<byte[], byte[]> EncodingTable = new Dictionary<byte[], byte[]>();
         public string NoDecode(string data)
         {
             return data;
@@ -20,7 +21,6 @@ namespace ErrorCorrectingCode
 
         public string Decode(string data, byte[,] matrix)
         {
-            var dataLong = data.Length;
             PrepareForDecoding(matrix);
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < data.Length; i = i + matrix.GetLength(1))
@@ -28,7 +28,7 @@ namespace ErrorCorrectingCode
                 try
                 {
                     var decodedVector = DecodeVector(data.Substring(i, matrix.GetLength(1)).Select(x => (byte)char.GetNumericValue(x)).ToArray());
-                    sb.Append(string.Join("", decodedVector.Select(x => x.ToString()).ToArray()));
+                    sb.Append(string.Join("", decodedVector.Select(x => x.ToString())));
                 }
                 catch { }
             }
@@ -40,7 +40,7 @@ namespace ErrorCorrectingCode
         {
             parityMatrix = manager.GenerateParityCheckFromGeneratingMatrix(matrix);
             generatingMatrix = matrix;
-            AnswersTable = manager.GetAnswersTable(matrix, matrix.GetLength(1));
+            EncodingTable = manager.GetEncodingTable(matrix, matrix.GetLength(0));
             SindromeCosetsTable = GenerateSindromeCosetsTable(matrix.GetLength(1));
         }
 
@@ -61,8 +61,6 @@ namespace ErrorCorrectingCode
 
         public byte[] DecodeVector(byte[] vector)
         {
-
-
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i <= vector.Length; i++)
@@ -73,7 +71,10 @@ namespace ErrorCorrectingCode
                 try
                 {
                     if (weight == 0)
-                        return AnswersTable.Where(x => x.Value.SequenceEqual(vector)).FirstOrDefault().Key;
+                    {
+                        return EncodingTable.Where(x => x.Value.SequenceEqual(vector)).First().Key;
+                    }
+                        
                 }
                 catch
                 {

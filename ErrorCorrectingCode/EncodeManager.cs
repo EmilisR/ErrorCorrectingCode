@@ -9,6 +9,7 @@ namespace ErrorCorrectingCode
     class EncodeManager
     {
         private MatrixManager matrixManager = new MatrixManager();
+        private Dictionary<byte[], byte[]> EncodingTable = new Dictionary<byte[], byte[]>();
 
         public string NoEncode(string data)
         {
@@ -19,11 +20,10 @@ namespace ErrorCorrectingCode
         {
             StringBuilder sb = new StringBuilder();
             
-            var transposed = matrixManager.TransposeMatrix(matrix);
             for (int i = 0; i < data.Length - matrix.GetLength(0); i = i + matrix.GetLength(0))
             {
-                var encodedVector = EncodeVector(data.Substring(i, matrix.GetLength(0)).Select(x => (byte)char.GetNumericValue(x)).ToArray(), transposed);
-                sb.Append(string.Join("", encodedVector.Select(x => x.ToString()).ToArray()));
+                var encodedVector = EncodeVector(data.Substring(i, matrix.GetLength(0)).Select(x => (byte)char.GetNumericValue(x)).ToArray(), matrix);
+                sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));
             }
 
             return sb.ToString();

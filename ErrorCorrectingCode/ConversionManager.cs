@@ -47,12 +47,15 @@ namespace ErrorCorrectingCode
         {
             if (binaryString.Length % 8 != 0)
                 binaryString += new String('0', binaryString.Length % 8);
-            return Enumerable.Range(0, int.MaxValue / 8)
-                          .Select(i => i * 8)    // get the starting index of which char segment
-                          .TakeWhile(i => i < binaryString.Length)
-                          .Select(i => binaryString.Substring(i, 8)) // get the binary string segments
-                          .Select(s => Convert.ToByte(s, 2)) // convert to byte
-                          .ToArray();
+
+            int numOfBytes = binaryString.Length / 8;
+            byte[] bytes = new byte[numOfBytes];
+            for (int i = 0; i < numOfBytes; ++i)
+            {
+                bytes[i] = Convert.ToByte(binaryString.Substring(8 * i, 8), 2);
+            }
+
+            return bytes;
         }
 
         //convert image to byte array

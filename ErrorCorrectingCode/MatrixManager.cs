@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,29 +52,37 @@ namespace ErrorCorrectingCode
         {
             int height = matrix.GetLength(0);
             int width = matrix.GetLength(1);
-            HashSet<string> hashSet = new HashSet<string>();
+            HashSet<string> hashSetRows = new HashSet<string>();
+            HashSet<string> hashSetColumns = new HashSet<string>();
             for (int i = 0, j = 0; i < height; i++, j++)
             {
                 var str = new string(GetRow(matrix, j).OfType<byte>().Select(x => x.ToString()[0]).ToArray());
                 var partOfStr = str.Substring(height, width - height);
-                hashSet.Add(partOfStr);
+                hashSetRows.Add(partOfStr);
             }
-            if (hashSet.Count == height)
+            /*for (int i = 0, j = 0; i < width; i++, j++)
+            {
+                var str = new string(GetColumn(matrix, j).OfType<byte>().Select(x => x.ToString()[0]).ToArray());
+                hashSetColumns.Add(str);
+            }*/
+            if (hashSetRows.Count == height/* && hashSetColumns.Count == width*/)
                 return true;
             else
                 return false;
         }
 
-        public Dictionary<byte[], byte[]> GetAnswersTable(byte[,] matrix, int width)
+        public Dictionary<byte[], byte[]> GetEncodingTable(byte[,] matrix, int heigth)
         {
             var dict = new Dictionary<byte[], byte[]>();
 
-            for (int i = 0; i < Math.Pow(2, width); i++)
+            for (int i = 0; i < Math.Pow(2, heigth); i++)
             {
-                var vector = Convert.ToString(i, 2).PadLeft(width, '0').Select(x => (byte)char.GetNumericValue(x)).ToArray();
-                var encodedVector = MultiplyMatrixAndVector(matrix, vector);
-                if (!dict.Values.Any(x => x.SequenceEqual(encodedVector)))
+                var vector = Convert.ToString(i, 2).PadLeft(heigth, '0').Select(x => (byte)char.GetNumericValue(x)).ToArray();
+                var encodedVector = MultiplyMatrixAndVector(TransposeMatrix(matrix), vector);
+                if (!dict.Keys.Any(x => x.SequenceEqual(vector)))
+                {
                     dict.Add(vector, encodedVector);
+                }
             }
 
             return dict;
@@ -103,15 +112,22 @@ namespace ErrorCorrectingCode
         {
             var width = matrix.GetLength(1);
             var height = matrix.GetLength(0);
-
-            if (row >= height)
-                throw new IndexOutOfRangeException("Row Index Out of Range");
-
             var returnRow = new byte[width];
             for (var i = 0; i < width; i++)
                 returnRow[i] = matrix[row, i];
 
             return returnRow;
+        }
+
+        public byte[] GetColumn(byte[,] matrix, int column)
+        {
+            var width = matrix.GetLength(1);
+            var height = matrix.GetLength(0);
+            var returnColumn = new byte[height];
+            for (var i = 0; i < height; i++)
+                returnColumn[i] = matrix[i, column];
+
+            return returnColumn;
         }
 
         public byte[] AddVector(byte[] vector1, byte[] vector2)

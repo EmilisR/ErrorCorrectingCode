@@ -51,6 +51,11 @@
             this.decodedPictureBox = new System.Windows.Forms.PictureBox();
             this.encodedPictureBox = new System.Windows.Forms.PictureBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.bitsCount = new System.Windows.Forms.Label();
+            this.withoutCorrectionErrorsCount = new System.Windows.Forms.Label();
+            this.withCorrectionErrorsCount = new System.Windows.Forms.Label();
+            this.correctedErrorsCount = new System.Windows.Forms.Label();
+            this.stopwatch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.probabilityTrackBar)).BeginInit();
             this.tabControl.SuspendLayout();
             this.textTabPage.SuspendLayout();
@@ -151,6 +156,11 @@
             // 
             // imageTabPage
             // 
+            this.imageTabPage.Controls.Add(this.stopwatch);
+            this.imageTabPage.Controls.Add(this.correctedErrorsCount);
+            this.imageTabPage.Controls.Add(this.withCorrectionErrorsCount);
+            this.imageTabPage.Controls.Add(this.withoutCorrectionErrorsCount);
+            this.imageTabPage.Controls.Add(this.bitsCount);
             this.imageTabPage.Controls.Add(this.viewMatrixButton);
             this.imageTabPage.Controls.Add(this.generateMatrixButton);
             this.imageTabPage.Controls.Add(this.setMatrixButton);
@@ -212,9 +222,9 @@
             // 
             // imageProbabilityValue
             // 
-            this.imageProbabilityValue.Location = new System.Drawing.Point(1153, 430);
+            this.imageProbabilityValue.Location = new System.Drawing.Point(1136, 430);
             this.imageProbabilityValue.Name = "imageProbabilityValue";
-            this.imageProbabilityValue.Size = new System.Drawing.Size(75, 35);
+            this.imageProbabilityValue.Size = new System.Drawing.Size(110, 35);
             this.imageProbabilityValue.TabIndex = 11;
             // 
             // label1
@@ -228,8 +238,8 @@
             // 
             // imageProbabilityTrackBar
             // 
-            this.imageProbabilityTrackBar.Location = new System.Drawing.Point(891, 430);
-            this.imageProbabilityTrackBar.Maximum = 100;
+            this.imageProbabilityTrackBar.Location = new System.Drawing.Point(874, 430);
+            this.imageProbabilityTrackBar.Maximum = 10000;
             this.imageProbabilityTrackBar.Name = "imageProbabilityTrackBar";
             this.imageProbabilityTrackBar.Size = new System.Drawing.Size(256, 101);
             this.imageProbabilityTrackBar.TabIndex = 10;
@@ -255,7 +265,7 @@
             // 
             // sendImageButton
             // 
-            this.sendImageButton.Location = new System.Drawing.Point(891, 607);
+            this.sendImageButton.Location = new System.Drawing.Point(874, 608);
             this.sendImageButton.Name = "sendImageButton";
             this.sendImageButton.Size = new System.Drawing.Size(337, 144);
             this.sendImageButton.TabIndex = 3;
@@ -284,6 +294,46 @@
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
+            // 
+            // bitsCount
+            // 
+            this.bitsCount.AutoSize = true;
+            this.bitsCount.Location = new System.Drawing.Point(31, 301);
+            this.bitsCount.Name = "bitsCount";
+            this.bitsCount.Size = new System.Drawing.Size(0, 29);
+            this.bitsCount.TabIndex = 18;
+            // 
+            // withoutCorrectionErrorsCount
+            // 
+            this.withoutCorrectionErrorsCount.AutoSize = true;
+            this.withoutCorrectionErrorsCount.Location = new System.Drawing.Point(31, 350);
+            this.withoutCorrectionErrorsCount.Name = "withoutCorrectionErrorsCount";
+            this.withoutCorrectionErrorsCount.Size = new System.Drawing.Size(0, 29);
+            this.withoutCorrectionErrorsCount.TabIndex = 19;
+            // 
+            // withCorrectionErrorsCount
+            // 
+            this.withCorrectionErrorsCount.AutoSize = true;
+            this.withCorrectionErrorsCount.Location = new System.Drawing.Point(31, 399);
+            this.withCorrectionErrorsCount.Name = "withCorrectionErrorsCount";
+            this.withCorrectionErrorsCount.Size = new System.Drawing.Size(0, 29);
+            this.withCorrectionErrorsCount.TabIndex = 20;
+            // 
+            // correctedErrorsCount
+            // 
+            this.correctedErrorsCount.AutoSize = true;
+            this.correctedErrorsCount.Location = new System.Drawing.Point(31, 449);
+            this.correctedErrorsCount.Name = "correctedErrorsCount";
+            this.correctedErrorsCount.Size = new System.Drawing.Size(0, 29);
+            this.correctedErrorsCount.TabIndex = 21;
+            // 
+            // stopwatch
+            // 
+            this.stopwatch.AutoSize = true;
+            this.stopwatch.Location = new System.Drawing.Point(31, 502);
+            this.stopwatch.Name = "stopwatch";
+            this.stopwatch.Size = new System.Drawing.Size(0, 29);
+            this.stopwatch.TabIndex = 22;
             // 
             // MainWindow
             // 
@@ -334,6 +384,11 @@
         private System.Windows.Forms.Button viewMatrixButton;
         private System.Windows.Forms.Button generateMatrixButton;
         private System.Windows.Forms.Button setMatrixButton;
+        private System.Windows.Forms.Label bitsCount;
+        private System.Windows.Forms.Label withCorrectionErrorsCount;
+        private System.Windows.Forms.Label withoutCorrectionErrorsCount;
+        private System.Windows.Forms.Label correctedErrorsCount;
+        private System.Windows.Forms.Label stopwatch;
     }
 }
 

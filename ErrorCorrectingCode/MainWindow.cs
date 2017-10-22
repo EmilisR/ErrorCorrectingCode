@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -66,8 +68,9 @@ namespace ErrorCorrectingCode
         private void chooseFileButton_Click(object sender, EventArgs e)
         {
             Stream myStream = null;
+            openFileDialog.FileName = "";
             openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "images| *.JPG; *.PNG; *.GJF";
+            openFileDialog.Filter = "images| *.JPG; *.PNG; *.GIF; *.BMP";
             openFileDialog.RestoreDirectory = true;
             encodedPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             decodedPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -84,11 +87,16 @@ namespace ErrorCorrectingCode
                         using (myStream)
                         {
                             encodedPictureBox.Image = Image.FromFile(openFileDialog.FileName);
+                            var img = (Bitmap)encodedPictureBox.Image;
+                            int psize = img.Size.Height * img.Size.Width * 3 * 8;  
+                            bitsCount.Text = $"Paveiksliuko bitų kiekis: {psize.ToString()}";
                         }
                         var fileName = openFileDialog.FileName.Split('\\');
                         fileNameLabel.Text = fileName[fileName.Count() - 1].Length > 15 ? fileName[fileName.Count() - 1].Substring(0, 15) + "..." : fileName[fileName.Count() - 1];
                     }
                     openFileDialog.Dispose();
+                    encodedDataWithCoding = "";
+                    encodedData = "";
                 }
                 catch (Exception ex)
                 {
@@ -101,6 +109,8 @@ namespace ErrorCorrectingCode
         {
             if (encodedPictureBox.Image != null)
             {
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
                 EncodeManager encodeManager = new EncodeManager();
                 ChannelManager channelManager = new ChannelManager();
                 DecodeManager decodeManager = new DecodeManager();
@@ -110,10 +120,20 @@ namespace ErrorCorrectingCode
                     encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString(), matrix);
                 var dataAfterChannel = channelManager.SendThroughChannel(encodedData, imageProbabilityTrackBar.Value);
                 var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, imageProbabilityTrackBar.Value);
-                var decodedData = decodeManager.NoDecode(dataAfterChannel).BinaryStringToBytes();
-                var decodedDataWithDecode = decodeManager.Decode(dataAfterChannelWithCoding, matrix).BinaryStringToBytes();
+                var decodedDataString = decodeManager.NoDecode(dataAfterChannel);
+                var decodedData = decodedDataString.BinaryStringToBytes();
+                var decodedDataWithDecodeString = decodeManager.Decode(dataAfterChannelWithCoding, matrix);
+                var bitCount = (double)Convert.ToInt32(bitsCount.Text.Split(' ')[3]);
+                var errorWithoutCorrection = channelManager.FindErrorsCount(encodedData, decodedDataString);
+                var errorWithCorrection = channelManager.FindErrorsCount(encodedData, decodedDataWithDecodeString);
+                withoutCorrectionErrorsCount.Text = $"Klaidingi bitai be klaidų taisymo: {Math.Round((errorWithoutCorrection / bitCount * 100), 2).ToString()}%";
+                withCorrectionErrorsCount.Text = $"Klaidingi bitai su klaidų taisymu: {Math.Round((errorWithCorrection / bitCount * 100), 2).ToString()}%";
+                correctedErrorsCount.Text = $"Ištaisyta klaidų: {Math.Round((double)(errorWithoutCorrection - errorWithCorrection)/ errorWithoutCorrection * 100, 2)}%";
+                var decodedDataWithDecode = decodedDataWithDecodeString.BinaryStringToBytes();
                 decodedPictureBox.Image = decodedData.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
                 decodedPictureBoxWithCorrecting.Image = decodedDataWithDecode.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
+                timer.Stop();
+                stopwatch.Text = $"Praėjęs laikas: {Math.Round((double)timer.ElapsedMilliseconds/1000, 2)} s.";
             }
             else
             {
@@ -123,7 +143,7 @@ namespace ErrorCorrectingCode
 
         private void imageProbabilityTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            imageProbabilityValue.Text = imageProbabilityTrackBar.Value.ToString() + "%";
+            imageProbabilityValue.Text = ((float)imageProbabilityTrackBar.Value / 100).ToString() + "%";
         }
 
         private void setMatrixButton_Click(object sender, EventArgs e)
@@ -132,6 +152,8 @@ namespace ErrorCorrectingCode
             if (matrixForm.ShowDialog()  == DialogResult.OK)
             {
                 matrix = matrixForm.matrix;
+                encodedData = "";
+                encodedDataWithCoding = "";
             }
         }
 
@@ -142,7 +164,11 @@ namespace ErrorCorrectingCode
             if (matrixForm.ShowDialog() == DialogResult.OK)
             {
                 matrix = matrixForm.matrix;
+                encodedData = "";
+                encodedDataWithCoding = "";
             }
+
+            
         }
 
         private void viewMatrixButton_Click(object sender, EventArgs e)
