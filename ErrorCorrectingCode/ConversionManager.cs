@@ -12,20 +12,20 @@ namespace ErrorCorrectingCode
 {
     public static class ConversionManager
     {
-        public static string[] TextToBytes(this string text)
+        public static byte[] TextToBytes(this string text)
         {
             var decimalChars = Encoding.ASCII.GetBytes(text);
-            List<string> bytes = new List<string>();
+            List<byte> bytes = new List<byte>();
 
             foreach (var symbol in decimalChars)
             {
-                bytes.Add(Convert.ToString(symbol, 2));
+                bytes.Add(Convert.ToByte(Convert.ToString(symbol, 2)));
             }
 
             return bytes.ToArray();
         }
 
-        public static string BytesToText(this string[] bytes)
+        public static string BytesToText(this byte[] bytes)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -35,6 +35,11 @@ namespace ErrorCorrectingCode
             }
 
             return sb.ToString();
+        }
+
+        public static string BytesToText(List<List<int>> seq)
+        {
+            return new String(seq.Select(s => (char)s.Aggregate((a, b) => a * 2 + b)).ToArray());
         }
 
         public static string BytesToBinaryString(this byte[] bytes)

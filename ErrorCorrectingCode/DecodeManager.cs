@@ -44,16 +44,49 @@ namespace ErrorCorrectingCode
             SindromeCosetsTable = GenerateSindromeCosetsTable(matrix.GetLength(1));
         }
 
+        private List<byte[]> GenerateAllVectorsTable(int width, int count)
+        {
+            var list = new List<byte[]>();
+            for (int i = 0; i < count; i ++)
+            {
+                list.Add(Convert.ToString(i, 2).PadLeft(width, '0').Select(x => (byte)char.GetNumericValue(x)).ToArray());
+            }
+            return list;
+        }
+
         private Dictionary<byte[], byte[]> GenerateSindromeCosetsTable(int width)
         {
             var dict = new Dictionary<byte[], byte[]>();
+            bool newCossetLeader = true;
+            var allVectors = GenerateAllVectorsTable(generatingMatrix.GetLength(1), (int)(Math.Pow(2, generatingMatrix.GetLength(0)) * Math.Pow(2, generatingMatrix.GetLength(1) - generatingMatrix.GetLength(0)))).ToList();
+            int weight = 0;
 
-            for (int i = 0; i < Math.Pow(2, width); i++)
+            while (dict.Count < Math.Pow(2, generatingMatrix.GetLength(1) - generatingMatrix.GetLength(0)))
             {
-                var vector = Convert.ToString(i, 2).PadLeft(width, '0').Select(x => (byte)char.GetNumericValue(x)).ToArray();
-                var sindrome = manager.GetSindrome(parityMatrix, vector);
-                if (!dict.Values.Any(x => x.SequenceEqual(sindrome)))
-                    dict.Add(vector, sindrome);
+                newCossetLeader = true;
+                while (newCossetLeader)
+                {
+                    var vector = allVectors.Where(x => x.Where(y => y != 0).Count() == weight).FirstOrDefault();
+                    if (vector != null)
+                    {
+                        var sindrome = manager.GetSindrome(parityMatrix, vector);
+                        if (!dict.Values.Any(x => x.SequenceEqual(sindrome)))
+                        {
+                            dict.Add(vector, sindrome);
+                            newCossetLeader = false;
+                            allVectors.Remove(vector);
+                        }
+                        else
+                        {
+                            allVectors.Remove(vector);
+                        }
+                    }
+                    else
+                    {
+                        weight++;
+                    }
+                    
+                }
             }
 
             return dict;

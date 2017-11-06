@@ -26,20 +26,14 @@ namespace ErrorCorrectingCode
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            /*if (encodeTextBox.Text != string.Empty || encodeTextBox.Text != "")
+            if (encodeTextBox.Text != string.Empty || encodeTextBox.Text != "")
             {
-                EncodeManager encodeManager = new EncodeManager();
-                var encodedData = encodeManager.Encode(encodeTextBox.Text.TextToBytes());
-                ChannelManager channelManager = new ChannelManager();
-                var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value);
-                DecodeManager decodeManager = new DecodeManager();
-                var decodedData = decodeManager.Decode(dataAfterChannel);
-                decodeTextBox.Text = decodedData.BytesToText();                
+        
             }
             else
             {
                 MessageBox.Show("Enter text!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
+            }
         }
 
         private void probabilityTrackBar_ValueChanged(object sender, EventArgs e)
@@ -49,20 +43,39 @@ namespace ErrorCorrectingCode
 
         private void sendFindingErrorsButton_Click(object sender, EventArgs e)
         {
-            /*if (encodeTextBox.Text != string.Empty || encodeTextBox.Text != "")
+            if (encodeTextBox.Text != string.Empty || encodeTextBox.Text != "")
             {
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
                 EncodeManager encodeManager = new EncodeManager();
-                var encodedData = encodeManager.NoEncode(encodeTextBox.Text.TextToBytes());
                 ChannelManager channelManager = new ChannelManager();
-                var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value);
                 DecodeManager decodeManager = new DecodeManager();
-                var decodedData = decodeManager.NoDecode(dataAfterChannel);
-                decodeTextBox.Text = decodedData.BytesToText();
+                if (encodedData == "")
+                    //encodedData = encodeManager.NoEncode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
+                if (encodedDataWithCoding == "")
+                    encodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
+                //var dataAfterChannel = channelManager.SendThroughChannel(encodedData, imageProbabilityTrackBar.Value);
+                var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, imageProbabilityTrackBar.Value);
+                //var decodedDataString = decodeManager.NoDecode(dataAfterChannel);
+                //var decodedData = decodedDataString.BinaryStringToBytes();
+                var decodedDataWithDecodeString = decodeManager.Decode(dataAfterChannelWithCoding, matrix);
+                //var bitCount = (double)Convert.ToInt32(bitsCount.Text.Split(' ')[3]);
+                //var errorWithoutCorrection = channelManager.FindErrorsCount(encodedData, decodedDataString);
+                //var errorWithCorrection = channelManager.FindErrorsCount(encodedData, decodedDataWithDecodeString);
+                //withoutCorrectionErrorsCount.Text = $"Klaidingi bitai be klaidų taisymo: {Math.Round((errorWithoutCorrection / bitCount * 100), 2).ToString()}%";
+                //withCorrectionErrorsCount.Text = $"Klaidingi bitai su klaidų taisymu: {Math.Round((errorWithCorrection / bitCount * 100), 2).ToString()}%";
+                //correctedErrorsCount.Text = $"Ištaisyta klaidų: {Math.Round((double)(errorWithoutCorrection - errorWithCorrection) / errorWithoutCorrection * 100, 2)}%";
+                var decodedDataWithDecode = decodedDataWithDecodeString.BinaryStringToBytes();
+                decodeTextBox.Text = decodedDataWithDecode.to
+                //decodedPictureBox.Image = decodedData.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
+                //decodedPictureBoxWithCorrecting.Image = decodedDataWithDecode.ByteArrayToBitmap(encodedPictureBox.Image.Width, encodedPictureBox.Image.Height);
+                timer.Stop();
+                stopwatch.Text = $"Praėjęs laikas: {Math.Round((double)timer.ElapsedMilliseconds / 1000, 2)} s.";
             }
             else
             {
                 MessageBox.Show("Enter text!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
+            }
         }
 
         private void chooseFileButton_Click(object sender, EventArgs e)

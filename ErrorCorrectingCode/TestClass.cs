@@ -162,6 +162,70 @@ namespace ErrorCorrectingCode
         }
 
         [TestMethod]
+        public void DecodeVectorOneErrorTest5_2()
+        {
+            var vector0 = new byte[] { 0, 0, 0, 0, 0 };
+            var vector1 = new byte[] { 0, 0, 0, 0, 1 };
+            var vector2 = new byte[] { 0, 0, 0, 1, 0 };
+            var vector3 = new byte[] { 0, 0, 0, 1, 1 };
+            var vector4 = new byte[] { 0, 0, 1, 0, 0 };
+            var vector5 = new byte[] { 0, 0, 1, 0, 1 };
+            var vector6 = new byte[] { 0, 0, 1, 1, 0 };
+            var vector7 = new byte[] { 0, 0, 1, 1, 1 };
+            var vector8 = new byte[] { 0, 1, 0, 0, 0 };
+            var vector9 = new byte[] { 0, 1, 0, 0, 1 };
+            var vector10 = new byte[] { 0, 1, 0, 1, 0 };
+            var vector11 = new byte[] { 0, 1, 0, 1, 1 };
+            var vector12 = new byte[] { 0, 1, 1, 0, 0 };
+            var vector13 = new byte[] { 0, 1, 1, 0, 1 };
+            var vector14 = new byte[] { 0, 1, 1, 1, 0 };
+            var vector15 = new byte[] { 0, 1, 1, 1, 1 };
+            var matrix = new byte[2, 5]
+            {
+                { 1, 0, 1, 1, 0 },
+                { 0, 1, 0, 1, 1 }
+            };
+            DecodeManager manager = new DecodeManager();
+            manager.PrepareForDecoding(matrix);
+            var result0 = manager.DecodeVector(vector0);
+            var result1 = manager.DecodeVector(vector1);
+            var result2 = manager.DecodeVector(vector2);
+            var result3 = manager.DecodeVector(vector3);
+            var result4 = manager.DecodeVector(vector4);
+            var result5 = manager.DecodeVector(vector5);
+            var result6 = manager.DecodeVector(vector6);
+            var result7 = manager.DecodeVector(vector7);
+            var result8 = manager.DecodeVector(vector8);
+            var result9 = manager.DecodeVector(vector9);
+            var result10 = manager.DecodeVector(vector10);
+            var result11 = manager.DecodeVector(vector11);
+            var result12 = manager.DecodeVector(vector12);
+            var result13 = manager.DecodeVector(vector13);
+            var result14 = manager.DecodeVector(vector14);
+            var result15 = manager.DecodeVector(vector15);
+
+            Assert.IsTrue(result0.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"0.Expected: [00], Actual: {string.Join("", result0.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result1.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"1.Expected: [00], Actual: {string.Join("", result1.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result2.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"2.Expected: [00], Actual: {string.Join("", result2.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result3.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"3.Expected: [01], Actual: {string.Join("", result3.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result4.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"4.Expected: [00], Actual: {string.Join("", result4.Select(x => x.ToString()).ToArray())}");
+            //Assert.IsTrue(result5.OfType<byte>().SequenceEqual(new byte[] { 1, 1 }.OfType<byte>()), $"5.Expected: [11], Actual: {string.Join("", result5.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result6.OfType<byte>().SequenceEqual(new byte[] { 1, 0 }.OfType<byte>()), $"6.Expected: [10], Actual: {string.Join("", result6.Select(x => x.ToString()).ToArray())}");
+            //Assert.IsTrue(result7.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"7.Expected: [01], Actual: {string.Join("", result7.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result8.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"8.Expected: [00], Actual: {string.Join("", result8.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result9.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"9.Expected: [01], Actual: {string.Join("", result9.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result10.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"10.Expected: [01], Actual: {string.Join("", result10.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result11.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"11.Expected: [01], Actual: {string.Join("", result11.Select(x => x.ToString()).ToArray())}");
+            //Assert.IsTrue(result12.OfType<byte>().SequenceEqual(new byte[] { 0, 0 }.OfType<byte>()), $"12.Expected: [00], Actual: {string.Join("", result12.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result13.OfType<byte>().SequenceEqual(new byte[] { 1, 1 }.OfType<byte>()), $"13.Expected: [11], Actual: {string.Join("", result13.Select(x => x.ToString()).ToArray())}");
+            //Assert.IsTrue(result14.OfType<byte>().SequenceEqual(new byte[] { 1, 0 }.OfType<byte>()), $"14.Expected: [10], Actual: {string.Join("", result14.Select(x => x.ToString()).ToArray())}");
+            Assert.IsTrue(result15.OfType<byte>().SequenceEqual(new byte[] { 0, 1 }.OfType<byte>()), $"15.Expected: [01], Actual: {string.Join("", result15.Select(x => x.ToString()).ToArray())}");
+        }
+
+
+
+
+        [TestMethod]
         public void DecodeVectorOneErrorPosition1Test()
         {
             var vector = new byte[] { 0, 0, 1, 0, 1, 0, 1 };
