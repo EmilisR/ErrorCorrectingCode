@@ -19,7 +19,11 @@ namespace ErrorCorrectingCode
 
             foreach (var symbol in decimalChars)
             {
-                bytes.Add(Convert.ToByte(Convert.ToString(symbol, 2)));
+                var binary = Convert.ToString(symbol, 2).PadLeft(8, '0');
+                foreach (var number in binary)
+                {
+                    bytes.Add(Convert.ToByte(number.ToString()));
+                }
             }
 
             return bytes.ToArray();
@@ -27,19 +31,12 @@ namespace ErrorCorrectingCode
 
         public static string BytesToText(this byte[] bytes)
         {
-            StringBuilder sb = new StringBuilder();
-
-            foreach (var bit in bytes)
+            var list = new List<List<int>>();
+            for (int i = 0; i < bytes.Count(); i += 8)
             {
-                sb.Append((char)Convert.ToInt32(bit, 2));
+                list.Add(bytes.Skip(i).Take(8).Select(x => (int)x).ToList());
             }
-
-            return sb.ToString();
-        }
-
-        public static string BytesToText(List<List<int>> seq)
-        {
-            return new String(seq.Select(s => (char)s.Aggregate((a, b) => a * 2 + b)).ToArray());
+            return new String(list.Select(s => (char)s.Aggregate((a, b) => a * 2 + b)).ToArray());
         }
 
         public static string BytesToBinaryString(this byte[] bytes)

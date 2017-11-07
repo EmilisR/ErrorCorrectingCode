@@ -20,7 +20,7 @@ namespace ErrorCorrectingCode
         {
             StringBuilder sb = new StringBuilder();
             
-            for (int i = 0; i < data.Length - matrix.GetLength(0); i = i + matrix.GetLength(0))
+            for (int i = 0; i <= data.Length - matrix.GetLength(0); i = i + matrix.GetLength(0))
             {
                 var encodedVector = EncodeVector(data.Substring(i, matrix.GetLength(0)).Select(x => (byte)char.GetNumericValue(x)).ToArray(), matrix);
                 sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ErrorCorrectingCode
@@ -52,6 +53,18 @@ namespace ErrorCorrectingCode
             MatrixManager manager = new MatrixManager();
             var result = manager.MultiplyMatrixAndVector(matrix, vector);
             Assert.IsTrue(result.OfType<byte>().SequenceEqual(new byte[] { 1, 0 }.OfType<byte>()));
+        }
+
+        [TestMethod]
+        public void BytesToStringTest()
+        {
+            var list = new string[] { "emilis", "test", "asda2s1das2121asd21a", "#@#$@#$DS23F1" };
+
+            foreach (var word in list)
+            {
+                var result = ConversionManager.BytesToText(ConversionManager.TextToBytes(word));
+                Assert.IsTrue(result == word);
+            }
         }
 
         [TestMethod]
