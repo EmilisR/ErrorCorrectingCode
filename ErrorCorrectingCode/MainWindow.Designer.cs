@@ -62,6 +62,7 @@
             this.textWithCorrectionErrorsCount = new System.Windows.Forms.Label();
             this.textWithoutCorrectionErrorsCount = new System.Windows.Forms.Label();
             this.textBitCount = new System.Windows.Forms.Label();
+            this.vectorTabPage = new System.Windows.Forms.TabPage();
             this.tabControl.SuspendLayout();
             this.textTabPage.SuspendLayout();
             this.imageTabPage.SuspendLayout();
@@ -91,6 +92,7 @@
             // 
             this.tabControl.Controls.Add(this.textTabPage);
             this.tabControl.Controls.Add(this.imageTabPage);
+            this.tabControl.Controls.Add(this.vectorTabPage);
             this.tabControl.Location = new System.Drawing.Point(12, 22);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -388,6 +390,15 @@
             this.textBitCount.Size = new System.Drawing.Size(0, 29);
             this.textBitCount.TabIndex = 10;
             // 
+            // vectorTabPage
+            // 
+            this.vectorTabPage.Location = new System.Drawing.Point(10, 47);
+            this.vectorTabPage.Name = "vectorTabPage";
+            this.vectorTabPage.Size = new System.Drawing.Size(1763, 1220);
+            this.vectorTabPage.TabIndex = 2;
+            this.vectorTabPage.Text = "Vektorius";
+            this.vectorTabPage.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
@@ -454,6 +465,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabPage vectorTabPage;
     }
 }
 

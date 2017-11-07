@@ -24,11 +24,6 @@ namespace ErrorCorrectingCode
             InitializeComponent();
         }
 
-        private void sendFindingErrorsButton_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void chooseFileButton_Click(object sender, EventArgs e)
         {
             Stream myStream = null;
@@ -149,17 +144,6 @@ namespace ErrorCorrectingCode
         private void imageProbabilityTrackBar_ValueChanged(object sender, EventArgs e)
         {
             probabilityValue.Text = ((float)probabilityTrackBar.Value / 100).ToString() + "%";
-        }
-
-        private void setMatrixButton_Click(object sender, EventArgs e)
-        {
-            MatrixEdit matrixForm = new MatrixEdit();
-            if (matrixForm.ShowDialog()  == DialogResult.OK)
-            {
-                matrix = matrixForm.matrix;
-                encodedData = "";
-                encodedDataWithCoding = "";
-            }
         }
 
         private void generateMatrixButton_Click(object sender, EventArgs e)

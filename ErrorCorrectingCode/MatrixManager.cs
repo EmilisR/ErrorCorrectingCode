@@ -119,17 +119,6 @@ namespace ErrorCorrectingCode
             return returnRow;
         }
 
-        public byte[] GetColumn(byte[,] matrix, int column)
-        {
-            var width = matrix.GetLength(1);
-            var height = matrix.GetLength(0);
-            var returnColumn = new byte[height];
-            for (var i = 0; i < height; i++)
-                returnColumn[i] = matrix[i, column];
-
-            return returnColumn;
-        }
-
         public byte[] AddVector(byte[] vector1, byte[] vector2)
         {
             var result = new byte[vector1.Length];
