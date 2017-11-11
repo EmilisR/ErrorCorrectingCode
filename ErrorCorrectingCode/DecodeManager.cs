@@ -36,6 +36,14 @@ namespace ErrorCorrectingCode
             return sb.ToString();
         }
 
+        public Tuple<string, string> DecodeOneVector(string data, byte[,] matrix)
+        {
+            PrepareForDecoding(matrix);
+            var decodedVector = DecodeVector(data.Select(x => (byte)char.GetNumericValue(x)).ToArray());
+            var decodedVectorWithCode = EncodingTable[decodedVector];
+            return new Tuple<string, string>(string.Join("", decodedVector.Select(x => x.ToString())), string.Join("", decodedVectorWithCode.Select(x => x.ToString())));
+        }
+
         public void PrepareForDecoding(byte[,] matrix)
         {
             parityMatrix = manager.GenerateParityCheckFromGeneratingMatrix(matrix);

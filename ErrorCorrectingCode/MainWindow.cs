@@ -18,6 +18,9 @@ namespace ErrorCorrectingCode
         private string encodedData = "";
         private string encodedDataWithCoding = "";
         private byte[,] matrix;
+        private EncodeManager encodeManager = new EncodeManager();
+        private ChannelManager channelManager = new ChannelManager();
+        private DecodeManager decodeManager = new DecodeManager();
 
         public MainWindow()
         {
@@ -75,27 +78,25 @@ namespace ErrorCorrectingCode
                     {
                         Stopwatch timer = new Stopwatch();
                         timer.Start();
-                        EncodeManager encodeManager = new EncodeManager();
-                        ChannelManager channelManager = new ChannelManager();
-                        DecodeManager decodeManager = new DecodeManager();
-                        encodedData = encodeManager.NoEncode(string.Join("", encodeTextBox.Text.TextToBytes()));
-                        encodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
-                        var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value);
-                        var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value);
-                        var decodedDataString = decodeManager.NoDecode(dataAfterChannel);
-                        var decodedData = decodedDataString.BinaryStringToBytes();
-                        var decodedDataWithDecodeString = decodeManager.Decode(dataAfterChannelWithCoding, matrix);
-                        var errorWithoutCorrection = channelManager.FindErrorsCount(encodedData, decodedDataString);
-                        var errorWithCorrection = channelManager.FindErrorsCount(encodedData, decodedDataWithDecodeString);
-                        var bitCount = (double)encodedData.Count();
+                        var textEncodedData = encodeManager.NoEncode(string.Join("", encodeTextBox.Text.TextToBytes()));
+                        var textEncodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
+                        var textDataAfterChannel = channelManager.SendThroughChannel(textEncodedData, probabilityTrackBar.Value);
+                        var textDataAfterChannelWithCoding = channelManager.SendThroughChannel(textEncodedDataWithCoding, probabilityTrackBar.Value);
+                        var textDecodedDataString = decodeManager.NoDecode(textDataAfterChannel);
+                        var textDecodedData = textDecodedDataString.BinaryStringToBytes();
+                        var textDecodedDataWithDecodeString = decodeManager.Decode(textDataAfterChannelWithCoding, matrix);
+                        var errorWithoutCorrection = channelManager.FindErrorsCount(textEncodedData, textDecodedDataString);
+                        var errorWithCorrection = channelManager.FindErrorsCount(textEncodedData, textDecodedDataWithDecodeString);
+                        var bitCount = (double)textEncodedData.Count();
                         textBitCount.Text = $"Teksto bitų kiekis: {bitCount.ToString()}";
                         textWithoutCorrectionErrorsCount.Text = $"Klaidingi bitai be klaidų taisymo: {Math.Round((errorWithoutCorrection / bitCount * 100), 2).ToString()}%";
                         textWithCorrectionErrorsCount.Text = $"Klaidingi bitai su klaidų taisymu: {Math.Round((errorWithCorrection / bitCount * 100), 2).ToString()}%";
                         textCorrectedErrorsCount.Text = $"Ištaisyta klaidų: {Math.Round((double)(errorWithoutCorrection - errorWithCorrection) / errorWithoutCorrection * 100, 2)}%";
-                        var decodedDataWithDecode = decodedDataWithDecodeString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
-                        var decodedDataWithoutDecode = decodedDataString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
-                        decodeTextBox.Text = decodedDataWithDecode;
-                        noDecodeTextBox.Text = decodedDataWithoutDecode;
+                        var decodedDataWithDecode = textDecodedDataWithDecodeString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
+                        var decodedDataWithoutDecode = textDecodedDataString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
+
+                        decodeTextBox.Text = decodedDataWithDecode.Replace("\0", "");
+                        noDecodeTextBox.Text = decodedDataWithoutDecode.Replace("\0", "");
                         timer.Stop();
                         textStopwatch.Text = $"Praėjęs laikas: {Math.Round((double)timer.ElapsedMilliseconds / 1000, 2)} s.";
                     }
@@ -109,9 +110,6 @@ namespace ErrorCorrectingCode
                     {
                         Stopwatch timer = new Stopwatch();
                         timer.Start();
-                        EncodeManager encodeManager = new EncodeManager();
-                        ChannelManager channelManager = new ChannelManager();
-                        DecodeManager decodeManager = new DecodeManager();
                         if (encodedData == "")
                             encodedData = encodeManager.NoEncode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
                         if (encodedDataWithCoding == "")
@@ -141,6 +139,11 @@ namespace ErrorCorrectingCode
             }
         }
 
+        private void changeControlsState(bool enable)
+        {
+            sendImageButton.Enabled = enable;
+        }
+
         private void imageProbabilityTrackBar_ValueChanged(object sender, EventArgs e)
         {
             probabilityValue.Text = ((float)probabilityTrackBar.Value / 100).ToString() + "%";
@@ -156,8 +159,6 @@ namespace ErrorCorrectingCode
                 encodedData = "";
                 encodedDataWithCoding = "";
             }
-
-            
         }
 
         private void viewMatrixButton_Click(object sender, EventArgs e)
@@ -190,11 +191,121 @@ namespace ErrorCorrectingCode
                 if (number >= 0 && number <= 10000 && (number % 1 == 0))
                 {
                     probabilityTrackBar.Value = (int)number;
-                    sendButton_Click(true, null);
                 }
                     
             }
             catch { }
+        }
+
+        private void inputText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13)
+            {
+                try
+                {
+                    validateVector(((TextBox)sender).Text, true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void validateVector(string text, bool input)
+        {
+            if (text.Any(x => x != '1' && x != '0'))
+            {
+                throw new Exception("Vektorius turi būti sudarytas tik iš 0 ir 1");
+            }
+            if (matrix == null)
+            {
+                throw new Exception("Nesugeneruota matrica");
+            }
+            if (matrix != null && text.Length != matrix.GetLength(input ? 0 : 1))
+            {
+                throw new Exception($"Vektoriaus ilgis {text.Length} netinkamas, turi būti {matrix.GetLength(input ? 0 : 1)}");
+            } 
+        }
+
+        private void encodeButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                validateVector(inputText.Text, true);
+                decodeButton.Enabled = true;
+                var encodedDataWithCoding = encodeManager.Encode(inputText.Text, matrix);
+                encodedVectorText.Text = encodedDataWithCoding;
+                var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value);
+                afterChannelVectorText.Text = dataAfterChannelWithCoding;
+                afterChannelVectorText.Enabled = true;
+                showErrors(encodedVectorText.Text, afterChannelVectorText.Text);
+                
+            }
+            catch (Exception ex)
+            {
+                setState(false);
+                decodeButton.Enabled = false;
+                MessageBox.Show(ex.Message, "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void showErrors(string original, string afterChannel)
+        {
+            var selectionStart = afterChannelVectorText.SelectionStart;
+            if (original.Length == afterChannel.Length)
+            {
+                afterChannelVectorText.SelectAll();
+                afterChannelVectorText.SelectionColor = Color.Black;
+                afterChannelVectorText.SelectionBackColor = Color.White;
+                afterChannelVectorText.DeselectAll();
+                for (int i = 0; i < original.Length; i++)
+                {
+                    if (original[i] != afterChannel[i])
+                    {
+                        afterChannelVectorText.SelectionStart = i;
+                        afterChannelVectorText.SelectionLength = 1;
+                        afterChannelVectorText.SelectionColor = Color.Red;
+                        afterChannelVectorText.SelectionBackColor = Color.Yellow;
+                    }
+                    afterChannelVectorText.Select(selectionStart, 0);
+                }
+            }
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            changeControlsState(tabControl.SelectedIndex != 2);
+        }
+
+        private void afterChannelVectorText_TextChanged(object sender, EventArgs e)
+        {
+            showErrors(encodedVectorText.Text, afterChannelVectorText.Text);
+        }
+
+        private void decodeButton_Click(object sender, EventArgs e)
+        {
+            validateVector(afterChannelVectorText.Text, false);
+            var decodedData = decodeManager.DecodeOneVector(afterChannelVectorText.Text, matrix);
+            decodedStartVectorText.Text = decodedData.Item1;
+            decodedVectorText.Text = decodedData.Item2;
+            setState(decodedStartVectorText.Text.Equals(inputText.Text));
+        }
+
+        private void setState(bool correct)
+        {
+            if (correct)
+            {
+                state.Text = "Teisingai";
+                state.TextAlign = HorizontalAlignment.Center;
+                state.BackColor = Color.Green;
+            }
+            else
+            {
+                state.Text = "Neteisingai";
+                state.TextAlign = HorizontalAlignment.Center;
+                state.BackColor = Color.Red;
+            }
         }
     }
 }
