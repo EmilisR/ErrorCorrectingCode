@@ -27,6 +27,12 @@ namespace ErrorCorrectingCode
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// Metodas skirtas atidaryti failų pasirinkimo langą ir užkrauti paveiksliuką į programą
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chooseFileButton_Click(object sender, EventArgs e)
         {
             Stream myStream = null;
@@ -139,16 +145,22 @@ namespace ErrorCorrectingCode
             }
         }
 
-        private void changeControlsState(bool enable)
-        {
-            sendImageButton.Enabled = enable;
-        }
-
+        /// <summary>
+        /// Atvaizduoja tikimybės procentą
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imageProbabilityTrackBar_ValueChanged(object sender, EventArgs e)
         {
             probabilityValue.Text = ((float)probabilityTrackBar.Value / 100).ToString() + "%";
         }
 
+
+        /// <summary>
+        /// Atidaromas matricos sukūrimo langas ir išsaugoma sukurta matrica
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void generateMatrixButton_Click(object sender, EventArgs e)
         {
             MatrixEdit matrixForm = new MatrixEdit();
@@ -161,6 +173,12 @@ namespace ErrorCorrectingCode
             }
         }
 
+        
+        /// <summary>
+        /// Atvaizduoja sugeneruotą matricą
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void viewMatrixButton_Click(object sender, EventArgs e)
         {
             if (matrix != null)
@@ -174,6 +192,12 @@ namespace ErrorCorrectingCode
             }
         }
 
+
+        /// <summary>
+        /// Atnaujina tikimybės procentą kai paspaudžiamas Enter
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void imageProbabilityValue_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
@@ -182,6 +206,11 @@ namespace ErrorCorrectingCode
             }
         }
 
+
+        /// <summary>
+        /// Apskaičiuojamas tikimybės procentas iš vartotojo įvesto teksto
+        /// </summary>
+        /// <param name="textBox"></param>
         private void updateTrackBar(TextBox textBox)
         {
             try
@@ -197,6 +226,12 @@ namespace ErrorCorrectingCode
             catch { }
         }
 
+
+        /// <summary>
+        /// Validuoja vektorių jei paspaudžiamas Enter esant vektoriaus kortelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void inputText_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 13)
@@ -212,6 +247,11 @@ namespace ErrorCorrectingCode
             }
         }
 
+        /// <summary>
+        /// Validuoja vektorių jei paspaudžiamas Enter esant vektoriaus kortelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void validateVector(string text, bool input)
         {
             if (text.Any(x => x != '1' && x != '0'))
@@ -228,6 +268,12 @@ namespace ErrorCorrectingCode
             } 
         }
 
+
+        /// <summary>
+        /// Atkoduoja vektorių, parodo vietas, kuriose atsirado klaidos esant vektoriaus kortelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void encodeButton_Click(object sender, EventArgs e)
         {
             try
@@ -250,6 +296,12 @@ namespace ErrorCorrectingCode
             }
         }
 
+
+        /// <summary>
+        /// Parodo klaidas atkoduotame vektoriuje esant vektoriaus kortelėje
+        /// </summary>
+        /// <param name="original"></param>
+        /// <param name="afterChannel"></param>
         private void showErrors(string original, string afterChannel)
         {
             var selectionStart = afterChannelVectorText.SelectionStart;
@@ -273,16 +325,33 @@ namespace ErrorCorrectingCode
             }
         }
 
+        /// <summary>
+        /// Pakeičia mygtuko „Apdoroti“ būseną
+        /// </summary>
+        /// <param name="enable"></param>
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            changeControlsState(tabControl.SelectedIndex != 2);
+            sendImageButton.Enabled = tabControl.SelectedIndex != 2;
         }
 
+
+        /// <summary>
+        /// Iškviečia klaidų parodymo metodą kai yra pakeičiamas tekstas 
+        /// atkoduoto vektoriaus tekstiniame lauke vektoriaus kortelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void afterChannelVectorText_TextChanged(object sender, EventArgs e)
         {
             showErrors(encodedVectorText.Text, afterChannelVectorText.Text);
         }
 
+
+        /// <summary>
+        /// Atkoduoja vektorių ir patikrina ar atitinka pradinį vektorių vektoriaus kortelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void decodeButton_Click(object sender, EventArgs e)
         {
             validateVector(afterChannelVectorText.Text, false);
@@ -292,6 +361,11 @@ namespace ErrorCorrectingCode
             setState(decodedStartVectorText.Text.Equals(inputText.Text));
         }
 
+        
+        /// <summary>
+        /// Nustato būsenos lauko būseną atsižvelgiant į tai, ar atkoduotas vektorius yra teisingas
+        /// </summary>
+        /// <param name="correct"></param>
         private void setState(bool correct)
         {
             if (correct)
