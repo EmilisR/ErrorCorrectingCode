@@ -142,7 +142,7 @@ namespace ErrorCorrectingCode
             }
             else
             {
-                this.matrix = new MatrixManager().SetMatrix(matrixTable);
+                this.matrix = new MatrixManager().DataGridViewTableToMatrix(matrixTable);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
