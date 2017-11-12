@@ -92,10 +92,9 @@ namespace ErrorCorrectingCode
                         var textEncodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
                         var textDataAfterChannel = channelManager.SendThroughChannel(textEncodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
                         var textDataAfterChannelWithCoding = channelManager.SendThroughChannel(textEncodedDataWithCoding, probabilityTrackBar.Value, matrix.GetLength(0)*2);
-                        var textDecodedDataString = decodeManager.NoDecode(textDataAfterChannel);
-                        var textDecodedData = textDecodedDataString.BinaryStringToBytes();
+                        var textDecodedData = textDataAfterChannel.BinaryStringToBytes();
                         var textDecodedDataWithDecodeString = decodeManager.Decode(textDataAfterChannelWithCoding, matrix);
-                        var errorWithoutCorrection = channelManager.FindErrorsCount(textEncodedData, textDecodedDataString);
+                        var errorWithoutCorrection = channelManager.FindErrorsCount(textEncodedData, textDataAfterChannel);
                         var errorWithCorrection = channelManager.FindErrorsCount(textEncodedData, textDecodedDataWithDecodeString);
                         var bitCount = (double)textEncodedData.Count();
                         textBitCount.Text = $"Teksto bitų kiekis: {bitCount.ToString()}";
@@ -103,7 +102,7 @@ namespace ErrorCorrectingCode
                         textWithCorrectionErrorsCount.Text = $"Klaidingi bitai su klaidų taisymu: {Math.Round((errorWithCorrection / bitCount * 100), 2).ToString()}%";
                         textCorrectedErrorsCount.Text = $"Ištaisyta klaidų: {Math.Round((double)(errorWithoutCorrection - errorWithCorrection) / errorWithoutCorrection * 100, 2)}%";
                         var decodedDataWithDecode = textDecodedDataWithDecodeString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
-                        var decodedDataWithoutDecode = textDecodedDataString.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
+                        var decodedDataWithoutDecode = textDataAfterChannel.Select(x => Convert.ToByte(x.ToString())).ToArray().BytesToText();
 
                         decodeTextBox.Text = decodedDataWithDecode.Replace("\0", "");
                         noDecodeTextBox.Text = decodedDataWithoutDecode.Replace("\0", "");
@@ -126,11 +125,10 @@ namespace ErrorCorrectingCode
                             encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString(), matrix);
                         var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
                         var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
-                        var decodedDataString = decodeManager.NoDecode(dataAfterChannel);
-                        var decodedData = decodedDataString.BinaryStringToBytes();
+                        var decodedData = dataAfterChannel.BinaryStringToBytes();
                         var decodedDataWithDecodeString = decodeManager.Decode(dataAfterChannelWithCoding, matrix);
                         var bitCount = (double)Convert.ToInt32(bitsCount.Text.Split(' ')[3]);
-                        var errorWithoutCorrection = channelManager.FindErrorsCount(encodedData, decodedDataString);
+                        var errorWithoutCorrection = channelManager.FindErrorsCount(encodedData, dataAfterChannel);
                         var errorWithCorrection = channelManager.FindErrorsCount(encodedData, decodedDataWithDecodeString);
                         withoutCorrectionErrorsCount.Text = $"Klaidingi bitai be klaidų taisymo: {Math.Round((errorWithoutCorrection / bitCount * 100), 2).ToString()}%";
                         withCorrectionErrorsCount.Text = $"Klaidingi bitai su klaidų taisymu: {Math.Round((errorWithCorrection / bitCount * 100), 2).ToString()}%";

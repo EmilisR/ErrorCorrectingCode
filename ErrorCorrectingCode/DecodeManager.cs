@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
-
     /// <summary>
-    /// 
+    /// Klasė skirta vektorių atkodavimui
     /// </summary>
     public class DecodeManager
     {
@@ -18,11 +15,13 @@ namespace ErrorCorrectingCode
         private MatrixManager manager = new MatrixManager();
         private Dictionary<byte[], byte[]> SindromeCosetsTable = new Dictionary<byte[], byte[]>();
         private Dictionary<byte[], byte[]> EncodingTable = new Dictionary<byte[], byte[]>();
-        public string NoDecode(string data)
-        {
-            return data;
-        }
 
+        /// <summary>
+        /// Atkoduoja binario pavidalo informaciją
+        /// </summary>
+        /// <param name="data">Dvinario pavidalo informacija</param>
+        /// <param name="matrix">Generuojanti matrica</param>
+        /// <returns>Atkoduota dvinario pavidalo informacija</returns>
         public string Decode(string data, byte[,] matrix)
         {
             PrepareForDecoding(matrix);
@@ -43,6 +42,12 @@ namespace ErrorCorrectingCode
             return result;
         }
 
+        /// <summary>
+        /// Atkoduoja vieną vektorių
+        /// </summary>
+        /// <param name="data">Vektorius dvinariu pavidalu</param>
+        /// <param name="matrix">Generuojanti matrica</param>
+        /// <returns>Atkoduotas vektorius, atkoduotas vektorius su kodu</returns>
         public Tuple<string, string> DecodeOneVector(string data, byte[,] matrix)
         {
             PrepareForDecoding(matrix);
@@ -51,6 +56,10 @@ namespace ErrorCorrectingCode
             return new Tuple<string, string>(string.Join("", decodedVector.Select(x => x.ToString())), string.Join("", decodedVectorWithCode.Select(x => x.ToString())));
         }
 
+        /// <summary>
+        /// Sugeneruoja visa informacija reikalinga atkodavimui: kontrolinė matrica, atkodavimo lentelė, klasių lyderių - sindromų lentelė
+        /// </summary>
+        /// <param name="matrix">Generuojanti matrica</param>
         public void PrepareForDecoding(byte[,] matrix)
         {
             parityMatrix = manager.GenerateParityCheckFromGeneratingMatrix(matrix);
@@ -59,6 +68,12 @@ namespace ErrorCorrectingCode
             SindromeCosetsTable = GenerateSindromeCosetsTable(matrix.GetLength(1));
         }
 
+        /// <summary>
+        /// Sugeneruoja visų galimų kodo žodžių lentelę
+        /// </summary>
+        /// <param name="width">Kodo ilgis</param>
+        /// <param name="count">Galimų žodžių kiekis</param>
+        /// <returns>Visi galimi vektoriai</returns>
         private List<byte[]> GenerateAllVectorsTable(int width, int count)
         {
             var list = new List<byte[]>();
@@ -69,6 +84,11 @@ namespace ErrorCorrectingCode
             return list;
         }
 
+        /// <summary>
+        /// Sugeneruoja klasių lyderių - sindromų lentelę
+        /// </summary>
+        /// <param name="width">Kodo ilgis</param>
+        /// <returns>Žodynas iš klasių lyderių - sindromų porų</returns>
         private Dictionary<byte[], byte[]> GenerateSindromeCosetsTable(int width)
         {
             var dict = new Dictionary<byte[], byte[]>();
@@ -92,52 +112,50 @@ namespace ErrorCorrectingCode
                             allVectors.Remove(vector);
                         }
                         else
-                        {
                             allVectors.Remove(vector);
-                        }
                     }
                     else
-                    {
                         weight++;
-                    }
-                    
                 }
             }
-
             return dict;
         }
 
+        /// <summary>
+        /// Dekoduoja vektorių step-by-step atkodavimu
+        /// </summary>
+        /// <param name="vector">Dvinario pavidalo vektorius</param>
+        /// <returns>Atkoduotas vektorius dvinariu pavidalu</returns>
         public byte[] DecodeVector(byte[] vector)
         {
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i <= vector.Length; i++)
             {
+                //Gaunamas vektoriaus sindromas
                 var sindrome = manager.GetSindrome(parityMatrix, vector);
 
+                //Apskaičiuojamas sindromo svoris
                 var weight = manager.GetWeightOfVector(SindromeCosetsTable.FirstOrDefault(x => x.Value.SequenceEqual(sindrome)).Key);
-                try
-                {
-                    if (weight == 0)
-                    {
-                        return EncodingTable.Where(x => x.Value.SequenceEqual(vector)).First().Key;
-                    }
-                        
-                }
-                catch
-                {
-                    return vector;
-                }
 
+                //Jei svoris lygus 0, atkoduojame esamu vektoriumi
+                if (weight == 0)
+                    return EncodingTable.Where(x => x.Value.SequenceEqual(vector)).First().Key;
 
                 var errorVector = new byte[vector.Length];
                 errorVector[i] = 1;
+
+                //Pridedame klaidų vektorių prie vektoriaus
                 errorVector = manager.AddVector(errorVector, vector);
 
+                //Gauname klaidų vektoriaus sindromą
                 var errorSindrome = manager.GetSindrome(parityMatrix, errorVector);
 
+                //Gauname klaidų vektoriaus sindromo svorį
                 var errorWeight = manager.GetWeightOfVector(SindromeCosetsTable.FirstOrDefault(x => x.Value.SequenceEqual(errorSindrome)).Key);
 
+                // Jei klaidų vektoriaus sindromo svoris mažesnis nei vektoriaus sindromo svoris, 
+                // vektoriui priskiriame esamą klaidų vektorių ir tęsiame
                 if (errorWeight < weight)
                     vector = errorVector;
             }
