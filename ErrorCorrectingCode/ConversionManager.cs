@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
@@ -16,6 +13,11 @@ namespace ErrorCorrectingCode
     /// </summary>
     public static class ConversionManager
     {
+        /// <summary>
+        /// Konvertuoja tekstą į byte[] tipo dvinario pavidalo informaciją
+        /// </summary>
+        /// <param name="text">Tekstas</param>
+        /// <returns>Byte[] tipo dvinario pavidalo informacija</returns>
         public static byte[] TextToBytes(this string text)
         {
             var decimalChars = Encoding.ASCII.GetBytes(text);
@@ -32,6 +34,11 @@ namespace ErrorCorrectingCode
             return bytes.ToArray();
         }
 
+        /// <summary>
+        /// Konvertuoja byte[] tipo dvinario pavidalo informaciją į tekstą
+        /// </summary>
+        /// <param name="bytes">Byte[] tipo dvinario pavidalo informacija</param>
+        /// <returns>Tekstas</returns>
         public static string BytesToText(this byte[] bytes)
         {
             var list = new List<List<int>>();
@@ -42,17 +49,21 @@ namespace ErrorCorrectingCode
             return new String(list.Select(s => (char)s.Aggregate((a, b) => a * 2 + b)).ToArray());
         }
 
+        /// <summary>
+        /// Konvertuoja byte[] tipo dvinario pavidalo informaciją į string tipą
+        /// </summary>
+        /// <param name="bytes">Byte[] tipo dvinario pavidalo informacija</param>
+        /// <returns>String tipo dvinario pavidalo informacija</returns>
         public static string BytesToBinaryString(this byte[] bytes)
         {
             return string.Concat(bytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
         }
 
-
         /// <summary>
         /// Konvertuoja string tipo dvinario pavidalo informaciją į byte[] tipą
         /// </summary>
         /// <param name="binaryString">String tipo dvinario pavidalo informacija</param>
-        /// <returns></returns>
+        /// <returns>Byte[] tipo dvinario pavidalo informacija</returns>
         public static byte[] BinaryStringToBytes(this string binaryString)
         {
             int numOfBytes = binaryString.Length / 8;

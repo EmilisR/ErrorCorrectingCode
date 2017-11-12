@@ -3,13 +3,11 @@ using System.Text;
 
 namespace ErrorCorrectingCode
 {
-
     /// <summary>
     /// Klasė, skirta siųsti kanalu pranešimą ir jį iškraipyti su tikimybe
     /// </summary>
     public class ChannelManager
     {
-
         /// <summary>
         /// Gautą pranešimą iškraipo su tikimybe
         /// </summary>
@@ -38,7 +36,6 @@ namespace ErrorCorrectingCode
             }
             return sb.ToString();
         }
-
 
         /// <summary>
         /// Apskaičiuoja kiek buvo padaryta klaidų iškraipant pranešimą
