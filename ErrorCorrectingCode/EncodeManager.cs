@@ -30,6 +30,21 @@ namespace ErrorCorrectingCode
                 sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));
             }
 
+            if (data.Length % matrix.GetLength(0) != 0)
+            {
+
+                var notFullVector = data.Substring(data.Length - matrix.GetLength(0) + 1, data.Length % matrix.GetLength(0));
+                var fullVector = notFullVector.PadRight(notFullVector.Length + 1, '1').PadRight(matrix.GetLength(0), '0');
+                var encodedVector = EncodeVector(fullVector.Select(x => (byte)char.GetNumericValue(x)).ToArray(), matrix);
+                sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));
+            }
+            else
+            {
+                var encodedVector = EncodeVector("1".PadRight(matrix.GetLength(0), '0').Select(x => (byte)char.GetNumericValue(x)).ToArray(), matrix);
+                sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));
+            }
+            var a = sb.Length;
+
             return sb.ToString();
         }
 

@@ -74,6 +74,11 @@ namespace ErrorCorrectingCode
 
         private void sendButton_Click(object sender, EventArgs e)
         {
+            if (matrix == null)
+            {
+                MessageBox.Show("Matrica dar nesugeneruota", "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (sender.ToString() != "True")
                 updateTrackBar(probabilityValue);
             switch (tabControl.SelectedIndex)
@@ -85,8 +90,8 @@ namespace ErrorCorrectingCode
                         timer.Start();
                         var textEncodedData = encodeManager.NoEncode(string.Join("", encodeTextBox.Text.TextToBytes()));
                         var textEncodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
-                        var textDataAfterChannel = channelManager.SendThroughChannel(textEncodedData, probabilityTrackBar.Value);
-                        var textDataAfterChannelWithCoding = channelManager.SendThroughChannel(textEncodedDataWithCoding, probabilityTrackBar.Value);
+                        var textDataAfterChannel = channelManager.SendThroughChannel(textEncodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
+                        var textDataAfterChannelWithCoding = channelManager.SendThroughChannel(textEncodedDataWithCoding, probabilityTrackBar.Value, matrix.GetLength(0)*2);
                         var textDecodedDataString = decodeManager.NoDecode(textDataAfterChannel);
                         var textDecodedData = textDecodedDataString.BinaryStringToBytes();
                         var textDecodedDataWithDecodeString = decodeManager.Decode(textDataAfterChannelWithCoding, matrix);
@@ -119,8 +124,8 @@ namespace ErrorCorrectingCode
                             encodedData = encodeManager.NoEncode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
                         if (encodedDataWithCoding == "")
                             encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString(), matrix);
-                        var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value);
-                        var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value);
+                        var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
+                        var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
                         var decodedDataString = decodeManager.NoDecode(dataAfterChannel);
                         var decodedData = decodedDataString.BinaryStringToBytes();
                         var decodedDataWithDecodeString = decodeManager.Decode(dataAfterChannelWithCoding, matrix);

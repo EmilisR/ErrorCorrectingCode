@@ -37,7 +37,10 @@ namespace ErrorCorrectingCode
                 catch { }
             }
 
-            return sb.ToString();
+            var result = sb.ToString();
+            var lastOne = result.LastIndexOf('1');
+            result = result.Substring(0, lastOne);
+            return result;
         }
 
         public Tuple<string, string> DecodeOneVector(string data, byte[,] matrix)

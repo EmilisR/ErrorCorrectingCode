@@ -12,7 +12,7 @@ namespace ErrorCorrectingCode
 {
 
     /// <summary>
-    /// 
+    /// Klasė skirta konvertuoti tekstą, paveiksliukus į dvinarį pavidalą
     /// </summary>
     public static class ConversionManager
     {
@@ -47,11 +47,14 @@ namespace ErrorCorrectingCode
             return string.Concat(bytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
         }
 
+
+        /// <summary>
+        /// Konvertuoja string tipo dvinario pavidalo informaciją į byte[] tipą
+        /// </summary>
+        /// <param name="binaryString">String tipo dvinario pavidalo informacija</param>
+        /// <returns></returns>
         public static byte[] BinaryStringToBytes(this string binaryString)
         {
-            if (binaryString.Length % 8 != 0)
-                binaryString += new String('0', binaryString.Length % 8);
-
             int numOfBytes = binaryString.Length / 8;
             byte[] bytes = new byte[numOfBytes];
             for (int i = 0; i < numOfBytes; ++i)
@@ -61,27 +64,38 @@ namespace ErrorCorrectingCode
             return bytes;
         }
 
-        public static byte[] BitmapToByteArray(this Bitmap img)    
+        /// <summary>
+        /// Konvertuoja paveiksliuką į dvinario pavidalo informaciją
+        /// </summary>
+        /// <param name="picture">Paveiksliukas</param>
+        /// <returns>Dvinario pavidalo informacija</returns>
+        public static byte[] BitmapToByteArray(this Bitmap picture)    
         {
-            BitmapData bmpData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, img.PixelFormat);    
-            int pixelbytes = Image.GetPixelFormatSize(img.PixelFormat) / 8;   
-            IntPtr ptr = bmpData.Scan0;   
-            Int32 psize = bmpData.Stride * bmpData.Height;  
-            byte[] byOut = new byte[psize];  
-            System.Runtime.InteropServices.Marshal.Copy(ptr, byOut, 0, psize);    
-            img.UnlockBits(bmpData); 
-            return byOut;     
+            BitmapData pictureData = picture.LockBits(new Rectangle(0, 0, picture.Width, picture.Height), ImageLockMode.ReadOnly, picture.PixelFormat);    
+            IntPtr pointer = pictureData.Scan0;   
+            Int32 pictureSize = pictureData.Stride * pictureData.Height;  
+            byte[] bytes = new byte[pictureSize];  
+            System.Runtime.InteropServices.Marshal.Copy(pointer, bytes, 0, pictureSize);
+            picture.UnlockBits(pictureData); 
+            return bytes;     
         }
 
-        public static Bitmap ByteArrayToBitmap(this byte[] byteIn, int imwidth, int imheight)   
+        /// <summary>
+        /// Konvertuoja dvinario pavidalo informaciją į paveiksliuką
+        /// </summary>
+        /// <param name="bytes">Dvinario pavidalo informacija</param>
+        /// <param name="width">Paveiksliuko plotis</param>
+        /// <param name="height">Paveiksliuko aukštis</param>
+        /// <returns>Paveiksliukas</returns>
+        public static Bitmap ByteArrayToBitmap(this byte[] bytes, int width, int height)   
         {
-            Bitmap picOut = new Bitmap(imwidth, imheight, PixelFormat.Format24bppRgb);
-            BitmapData bmpData = picOut.LockBits(new Rectangle(0, 0, imwidth, imheight), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
-            IntPtr ptr = bmpData.Scan0;
-            Int32 psize = bmpData.Stride * imheight;
-            System.Runtime.InteropServices.Marshal.Copy(byteIn, 0, ptr, psize);
-            picOut.UnlockBits(bmpData);
-            return picOut;     
+            Bitmap picture = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            BitmapData pictureData = picture.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
+            IntPtr pointer = pictureData.Scan0;
+            Int32 pictureSize = pictureData.Stride * height;
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, pointer, pictureSize);
+            picture.UnlockBits(pictureData);
+            return picture;     
         }
     }
 }
