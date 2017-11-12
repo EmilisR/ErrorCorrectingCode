@@ -8,9 +8,8 @@ using System.Windows.Forms;
 
 namespace ErrorCorrectingCode
 {
-
     /// <summary>
-    /// 
+    /// Pagrindinio programos lango klasė
     /// </summary>
     public partial class MainWindow : Form
     {
@@ -72,6 +71,11 @@ namespace ErrorCorrectingCode
             }
         }
 
+        /// <summary>
+        /// Vykdyti atkodavimą
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void sendButton_Click(object sender, EventArgs e)
         {
             if (matrix == null)
@@ -157,7 +161,6 @@ namespace ErrorCorrectingCode
             probabilityValue.Text = ((float)probabilityTrackBar.Value / 100).ToString() + "%";
         }
 
-
         /// <summary>
         /// Atidaromas matricos sukūrimo langas ir išsaugoma sukurta matrica
         /// </summary>
@@ -174,7 +177,6 @@ namespace ErrorCorrectingCode
                 encodedDataWithCoding = "";
             }
         }
-
         
         /// <summary>
         /// Atvaizduoja sugeneruotą matricą
@@ -194,7 +196,6 @@ namespace ErrorCorrectingCode
             }
         }
 
-
         /// <summary>
         /// Atnaujina tikimybės procentą kai paspaudžiamas Enter
         /// </summary>
@@ -207,7 +208,6 @@ namespace ErrorCorrectingCode
                 updateTrackBar((TextBox)sender);
             }
         }
-
 
         /// <summary>
         /// Apskaičiuojamas tikimybės procentas iš vartotojo įvesto teksto
@@ -227,7 +227,6 @@ namespace ErrorCorrectingCode
             }
             catch { }
         }
-
 
         /// <summary>
         /// Validuoja vektorių jei paspaudžiamas Enter esant vektoriaus kortelėje
@@ -270,7 +269,6 @@ namespace ErrorCorrectingCode
             } 
         }
 
-
         /// <summary>
         /// Atkoduoja vektorių, parodo vietas, kuriose atsirado klaidos esant vektoriaus kortelėje
         /// </summary>
@@ -297,7 +295,6 @@ namespace ErrorCorrectingCode
                 MessageBox.Show(ex.Message, "Klaida", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         /// <summary>
         /// Parodo klaidas atkoduotame vektoriuje esant vektoriaus kortelėje
@@ -336,7 +333,6 @@ namespace ErrorCorrectingCode
             sendImageButton.Enabled = tabControl.SelectedIndex != 2;
         }
 
-
         /// <summary>
         /// Iškviečia klaidų parodymo metodą kai yra pakeičiamas tekstas 
         /// atkoduoto vektoriaus tekstiniame lauke vektoriaus kortelėje
@@ -347,7 +343,6 @@ namespace ErrorCorrectingCode
         {
             showErrors(encodedVectorText.Text, afterChannelVectorText.Text);
         }
-
 
         /// <summary>
         /// Atkoduoja vektorių ir patikrina ar atitinka pradinį vektorių vektoriaus kortelėje
@@ -362,7 +357,6 @@ namespace ErrorCorrectingCode
             decodedVectorText.Text = decodedData.Item2;
             setState(decodedStartVectorText.Text.Equals(inputText.Text));
         }
-
         
         /// <summary>
         /// Nustato būsenos lauko būseną atsižvelgiant į tai, ar atkoduotas vektorius yra teisingas

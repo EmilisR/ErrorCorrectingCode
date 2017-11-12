@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ErrorCorrectingCode
 {
-
     /// <summary>
-    /// 
+    /// Matricos redagavimo/peržiūros formos klasė
     /// </summary>
     public partial class MatrixEdit : Form
     {
@@ -25,6 +20,10 @@ namespace ErrorCorrectingCode
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Paruošia formą matricos redagavimui
+        /// </summary>
+        /// <param name="matrixArray">Matrica</param>
         public MatrixEdit(byte[,] matrixArray) : this()
         {
             changeMatrixSizeButton.Visible = false;
@@ -48,6 +47,11 @@ namespace ErrorCorrectingCode
             matrixTable.Enabled = false;
         }
 
+        /// <summary>
+        /// Pakeičia matricos parametrus ir juos validuoja
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void changeMatrixSizeButton_Click(object sender, EventArgs e)
         {
             if (int.TryParse(codeLengthMaskedTextBox.Text, out int width) &&
@@ -90,6 +94,12 @@ namespace ErrorCorrectingCode
             }
         }
 
+        /// <summary>
+        /// Atvaizduoja matricą grafinės sąsajos lentelėje
+        /// </summary>
+        /// <param name="array">Matrica</param>
+        /// <param name="heigth">Lentelės aukštis</param>
+        /// <param name="width">Lentelės plotis</param>
         private void BindMatrixArrayToTable(byte[,] array, int heigth, int width)
         {
             for (int i = 0; i < heigth; i++)
@@ -101,6 +111,11 @@ namespace ErrorCorrectingCode
             }
         }
 
+        /// <summary>
+        /// Išsaugo matricą ir ją validuoja
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveMatrixButton_Click(object sender, EventArgs e)
         {
             var manager = new MatrixManager();
@@ -142,12 +157,17 @@ namespace ErrorCorrectingCode
             }
             else
             {
-                this.matrix = new MatrixManager().DataGridViewTableToMatrix(matrixTable);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                matrix = new MatrixManager().DataGridViewTableToMatrix(matrixTable);
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 
+        /// <summary>
+        /// Atžymi visas celes lentelėje
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MatrixEdit_Load(object sender, EventArgs e)
         {
             matrixTable.ClearSelection();
