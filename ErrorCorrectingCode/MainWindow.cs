@@ -88,7 +88,7 @@ namespace ErrorCorrectingCode
                     {
                         Stopwatch timer = new Stopwatch();
                         timer.Start();
-                        var textEncodedData = encodeManager.NoEncode(string.Join("", encodeTextBox.Text.TextToBytes()));
+                        var textEncodedData = string.Join("", encodeTextBox.Text.TextToBytes());
                         var textEncodedDataWithCoding = encodeManager.Encode(string.Join("", encodeTextBox.Text.TextToBytes()), matrix);
                         var textDataAfterChannel = channelManager.SendThroughChannel(textEncodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
                         var textDataAfterChannelWithCoding = channelManager.SendThroughChannel(textEncodedDataWithCoding, probabilityTrackBar.Value, matrix.GetLength(0)*2);
@@ -120,7 +120,7 @@ namespace ErrorCorrectingCode
                         Stopwatch timer = new Stopwatch();
                         timer.Start();
                         if (encodedData == "")
-                            encodedData = encodeManager.NoEncode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString());
+                            encodedData = ((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString();
                         if (encodedDataWithCoding == "")
                             encodedDataWithCoding = encodeManager.Encode(((Bitmap)(encodedPictureBox.Image)).BitmapToByteArray().BytesToBinaryString(), matrix);
                         var dataAfterChannel = channelManager.SendThroughChannel(encodedData, probabilityTrackBar.Value, matrix.GetLength(0) * 2);
