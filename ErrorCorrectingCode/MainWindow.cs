@@ -280,7 +280,7 @@ namespace ErrorCorrectingCode
             {
                 validateVector(inputText.Text, true);
                 decodeButton.Enabled = true;
-                var encodedDataWithCoding = encodeManager.Encode(inputText.Text, matrix);
+                var encodedDataWithCoding = encodeManager.EncodeOneVector(inputText.Text, matrix);
                 encodedVectorText.Text = encodedDataWithCoding;
                 var dataAfterChannelWithCoding = channelManager.SendThroughChannel(encodedDataWithCoding, probabilityTrackBar.Value);
                 afterChannelVectorText.Text = dataAfterChannelWithCoding;

@@ -45,6 +45,20 @@ namespace ErrorCorrectingCode
         }
 
         /// <summary>
+        /// Užkoduoja vieną vektorių
+        /// </summary>
+        /// <param name="data">Vektorius</param>
+        /// <param name="matrix">Generuojanti matrica</param>
+        /// <returns>Užkoduotas vektorius</returns>
+        public string EncodeOneVector(string data, byte[,] matrix)
+        {
+            StringBuilder sb = new StringBuilder();
+            var encodedVector = EncodeVector(data.Select(x => (byte)char.GetNumericValue(x)).ToArray(), matrix);
+            sb.Append(string.Join("", encodedVector.Select(x => x.ToString())));
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Užkoduoja vektorių pagal generuojančią matricą
         /// </summary>
         /// <param name="vector">Vektorius dvinariu pavidalu</param>
