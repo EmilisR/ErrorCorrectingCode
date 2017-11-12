@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ConversionManager
     {
         public static byte[] TextToBytes(this string text)
@@ -25,7 +29,6 @@ namespace ErrorCorrectingCode
                     bytes.Add(Convert.ToByte(number.ToString()));
                 }
             }
-
             return bytes.ToArray();
         }
 
@@ -44,7 +47,6 @@ namespace ErrorCorrectingCode
             return string.Concat(bytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
         }
 
-
         public static byte[] BinaryStringToBytes(this string binaryString)
         {
             if (binaryString.Length % 8 != 0)
@@ -56,31 +58,24 @@ namespace ErrorCorrectingCode
             {
                 bytes[i] = Convert.ToByte(binaryString.Substring(8 * i, 8), 2);
             }
-
             return bytes;
         }
 
-        //convert image to byte array
-
-        public static byte[] BitmapToByteArray(this Bitmap img)      //img is the input image. Image width and height in pixels. PixelFormat is 24 bit per pixel in this case
+        public static byte[] BitmapToByteArray(this Bitmap img)    
         {
-            BitmapData bmpData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, img.PixelFormat);    //define and lock the area of the picture with rectangle
-            int pixelbytes = Image.GetPixelFormatSize(img.PixelFormat) / 8;     //for 24 bpp the value of pixelbytes is 3, for 32 bpp is 4, for 8 bpp is 1
-            IntPtr ptr = bmpData.Scan0;      //this is a memory address, where the bitmap starts
-            Int32 psize = bmpData.Stride * bmpData.Height;      // picture size in bytes
-            byte[] byOut = new byte[psize];     //create the output byte array, which size is obviously the same as the input one
-            System.Runtime.InteropServices.Marshal.Copy(ptr, byOut, 0, psize);      //this is a very fast method, which copies the memory content to byteOut array, but implemented for 24 bpp pictures only
-            img.UnlockBits(bmpData);      //release the locked memory
-            return byOut;      //  e finita la commedia
+            BitmapData bmpData = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, img.PixelFormat);    
+            int pixelbytes = Image.GetPixelFormatSize(img.PixelFormat) / 8;   
+            IntPtr ptr = bmpData.Scan0;   
+            Int32 psize = bmpData.Stride * bmpData.Height;  
+            byte[] byOut = new byte[psize];  
+            System.Runtime.InteropServices.Marshal.Copy(ptr, byOut, 0, psize);    
+            img.UnlockBits(bmpData); 
+            return byOut;     
         }
 
-
-
-        //convert byte array to bitmap
-
-        public static Bitmap ByteArrayToBitmap(this byte[] byteIn, int imwidth, int imheight)     // byteIn the input byte array. Picture size should be known
+        public static Bitmap ByteArrayToBitmap(this byte[] byteIn, int imwidth, int imheight)   
         {
-            Bitmap picOut = new Bitmap(imwidth, imheight, PixelFormat.Format24bppRgb);  //define the output picture
+            Bitmap picOut = new Bitmap(imwidth, imheight, PixelFormat.Format24bppRgb);
             BitmapData bmpData = picOut.LockBits(new Rectangle(0, 0, imwidth, imheight), ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
             IntPtr ptr = bmpData.Scan0;
             Int32 psize = bmpData.Stride * imheight;

@@ -10,6 +10,10 @@ using System.Windows.Forms;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class MatrixEdit : Form
     {
         public byte[,] matrix;

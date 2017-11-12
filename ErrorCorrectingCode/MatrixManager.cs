@@ -8,6 +8,10 @@ using System.Windows.Forms;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class MatrixManager
     {
         public byte[,] GenerateMatrix(int height, int width)
@@ -60,12 +64,7 @@ namespace ErrorCorrectingCode
                 var partOfStr = str.Substring(height, width - height);
                 hashSetRows.Add(partOfStr);
             }
-            /*for (int i = 0, j = 0; i < width; i++, j++)
-            {
-                var str = new string(GetColumn(matrix, j).OfType<byte>().Select(x => x.ToString()[0]).ToArray());
-                hashSetColumns.Add(str);
-            }*/
-            if (hashSetRows.Count == height/* && hashSetColumns.Count == width*/)
+            if (hashSetRows.Count == height)
                 return true;
             else
                 return false;

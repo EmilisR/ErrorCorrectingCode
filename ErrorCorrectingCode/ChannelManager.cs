@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class ChannelManager
     {
         public string SendThroughChannel(string binaryString, int probabilityOfDataLoss)
@@ -26,22 +30,18 @@ namespace ErrorCorrectingCode
                     sb.Append(bit);
                 }
             }
-
             return sb.ToString();
         }
 
         public int FindErrorsCount(string before, string after)
         {
             int counter = 0;
-            var a = after.Length;
-            var b = before.Length;
             before = before.Substring(0, after.Length);
             for (int i = 0; i < before.Length; i++)
             {
                 if (before[i] != after[i])
                     counter++;
             }
-
             return counter;
         }
     }

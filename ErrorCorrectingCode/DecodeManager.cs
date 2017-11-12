@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class DecodeManager
     {
         private byte[,] parityMatrix;

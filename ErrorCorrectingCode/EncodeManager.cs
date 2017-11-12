@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ErrorCorrectingCode
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     class EncodeManager
     {
         private MatrixManager matrixManager = new MatrixManager();
